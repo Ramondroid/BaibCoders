@@ -9,31 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@auth/prisma-adapter": "^2.9.1",
     "@prisma/client": "^6.8.2",
+    "bcrypt": "^6.0.0",
     "next": "^15.3.3",
     "next-auth": "^4.24.7",
-=======
-    "@ai-sdk/azure": "^1.3.23",
-    "@ai-sdk/react": "^1.2.12",
-    "@azure/msal-node": "^3.6.0",
-    "@microsoft/agents-activity": "^0.4.3",
-    "@microsoft/agents-copilotstudio-client": "^0.4.3",
-    "ai": "^4.3.16",
-    "clean-modules": "^3.1.1",
-    "lib-utils-ts": "^0.0.0-test",
-    "next": "^15.3.3",
-    "open": "^10.1.2",
->>>>>>> fde562a97c4f81374a0207f1f50b24d839ffb3ad
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
-    "tailwind": "^4.0.0"
+    "tailwind": "^2.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

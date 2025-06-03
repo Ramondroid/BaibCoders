@@ -1,5 +1,5 @@
 'use client';
-
+import { useRouter } from "next/navigation";
 import React, { useState } from 'react';
 
 export default function SignUpPage() {
@@ -11,28 +11,33 @@ export default function SignUpPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const router = useRouter();
 
-    if (!form.name || !form.email || !form.password) {
-      setError('All fields are required.');
-      return;
-    }
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
+  if (!form.name || !form.email || !form.password) {
+    setError('All fields are required.');
+    return;
+  }
 
-    if (res.ok) {
-      setSuccess('Account created!');
-      setError('');
-    } else {
-      const { message } = await res.json();
-      setError(message || 'Something went wrong.');
-    }
-  };
+  const res = await fetch('/api/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(form),
+  });
+
+  if (res.ok) {
+    setSuccess('Account created!');
+    setError('');
+    router.push('/dashboard');
+    router.refresh();
+    
+  } else {
+    const { message } = await res.json();
+    setError(message || 'Something went wrong.');
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

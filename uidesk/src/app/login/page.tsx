@@ -1,5 +1,5 @@
 'use client';
-
+import { useRouter } from "next/navigation";
 import React, { useState } from 'react';
 
 export default function LoginPage() {
@@ -10,6 +10,8 @@ export default function LoginPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +25,9 @@ export default function LoginPage() {
     if (res.ok) {
       setSuccess('Login successful!');
       setError('');
+      router.push('/dashboard'); 
+      router.refresh();
+
     } else {
       const { message } = await res.json();
       setError(message || 'Invalid credentials');
