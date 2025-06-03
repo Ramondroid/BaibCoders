@@ -5,14 +5,10 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 const navLinks: { href: string; label: string }[] = [
-  { href: '/', label: 'Dashboard' },
-  { href: '/tickets', label: 'Tickets' },
-  { href: '/about', label: 'About' },
-  { href: '/services', label: 'Services' },
-  { href: '/contact', label: 'Contact' }
+  { href: '/signup', label: 'Sign Up' }
 ];
 
-const Navbar: React.FC = () => {
+const noAuthNavbar: React.FC = () => {
   const pathname = usePathname();
 
   return (
@@ -34,4 +30,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default noAuthNavbar;
