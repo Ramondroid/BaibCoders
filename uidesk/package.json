@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
+    "@auth/prisma-adapter": "^2.9.1",
+    "@prisma/client": "^6.8.2",
+    "next": "^15.3.3",
+    "next-auth": "^4.24.7",
+=======
     "@ai-sdk/azure": "^1.3.23",
     "@ai-sdk/react": "^1.2.12",
     "@azure/msal-node": "^3.6.0",
@@ -19,6 +25,7 @@
     "lib-utils-ts": "^0.0.0-test",
     "next": "^15.3.3",
     "open": "^10.1.2",
+>>>>>>> fde562a97c4f81374a0207f1f50b24d839ffb3ad
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
@@ -32,6 +39,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "prisma": "^6.8.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
