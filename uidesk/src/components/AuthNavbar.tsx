@@ -9,8 +9,7 @@ const navLinks: { href: string; label: string }[] = [
   { href: '/tickets', label: 'Tickets' },
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
-  { href: '/profile', label: 'Profile' },
-
+  { href: '/profile', label: 'Profile' }
 ];
 
 const AuthNavbar: React.FC = () => {

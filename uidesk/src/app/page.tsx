@@ -4,7 +4,6 @@ import Navbar from '../components/AuthNavbar';
 export default function Home() {
   return (
     <div>
-      <p>Hello!</p>
     </div>
   );
 }
