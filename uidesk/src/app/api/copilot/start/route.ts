@@ -1,20 +1,24 @@
-import { NextResponse } from 'next/server'
-import { getClient } from '@/lib/copilotClient'
+import { NextRequest, NextResponse } from 'next/server'
+import { CopilotStudioClient, ConnectionSettings } from '@microsoft/agents-copilotstudio-client'
 
-export async function GET() {
-  try {
-    const { activity } = await getClient()
-    if (!activity) {
-      return NextResponse.json({ error: 'Failed to start conversation' }, { status: 500 })
-    }
+export async function GET(req: NextRequest) {
+  const authHeader = req.headers.get('authorization')
+  const token = authHeader?.split(' ')[1]
 
-    return NextResponse.json({
-      message: activity.text,
-      conversationId: activity.conversation?.id,
-      suggestions: activity.suggestedActions?.actions.map((a) => a.value) || [],
-    })
-  } catch (e) {
-    console.error(e)
-    return NextResponse.json({ error: 'Failed to start conversation' }, { status: 500 })
+  if (!token) {
+    return NextResponse.json({ error: 'Missing token' }, { status: 401 })
   }
+
+  const settings: ConnectionSettings = {
+    environmentId: process.env.NEXT_PUBLIC_ENVIRONMENT_ID!,
+    agentIdentifier: process.env.NEXT_PUBLIC_AGENT_IDENTIFIER!,
+    tenantId: process.env.NEXT_PUBLIC_TENANT_ID!,
+    appClientId: process.env.NEXT_PUBLIC_APP_CLIENT_ID!,
+    cloud: '',
+  }
+
+  const client = new CopilotStudioClient(settings, token)
+  const act = await client.startConversationAsync(true)
+
+  return NextResponse.json({ text: act.text, conversation: act.conversation })
 }

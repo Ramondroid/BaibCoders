@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getClient } from '@/lib/copilotClient'
-import { ActivityTypes } from '@microsoft/agents-activity'
+import { CopilotStudioClient, ConnectionSettings } from '@microsoft/agents-copilotstudio-client'
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const { message } = body
+  const authHeader = req.headers.get('authorization')
+  const token = authHeader?.split(' ')[1]
 
-  try {
-    const { client, conversationId } = await getClient()
-    if (!conversationId) throw new Error('Missing conversation ID')
-
-    const replies = await client.askQuestionAsync(message, conversationId)
-
-    const formatted = replies.map((r) => ({
-      type: r.type,
-      text: r.text,
-      suggestions: r.suggestedActions?.actions.map((a) => a.value) || [],
-    }))
-
-    return NextResponse.json({ replies: formatted })
-  } catch (e) {
-    console.error(e)
-    return NextResponse.json({ error: 'Failed to ask question' }, { status: 500 })
+  if (!token) {
+    return NextResponse.json({ error: 'Missing access token' }, { status: 401 })
   }
+
+  const body = await req.json()
+  const { text, conversationId } = body
+
+  if (!text || !conversationId) {
+    return NextResponse.json({ error: 'Missing text or conversationId' }, { status: 400 })
+  }
+
+  const settings: ConnectionSettings = {
+    environmentId: process.env.NEXT_PUBLIC_ENVIRONMENT_ID!,
+    agentIdentifier: process.env.NEXT_PUBLIC_AGENT_IDENTIFIER!,
+    tenantId: process.env.NEXT_PUBLIC_TENANT_ID!,
+    appClientId: process.env.NEXT_PUBLIC_APP_CLIENT_ID!,
+    cloud: '',
+  }
+
+  const client = new CopilotStudioClient(settings, token)
+  const replies = await client.askQuestionAsync(text, conversationId)
+
+  return NextResponse.json(replies)
 }

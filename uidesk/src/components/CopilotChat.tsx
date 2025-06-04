@@ -1,112 +1,132 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { PublicClientApplication, type AuthenticationResult } from '@azure/msal-browser'
+import { msalConfig } from '@/lib/msalConfig' // You create this
 
-type Message = {
-  from: 'user' | 'copilot'
-  text: string
-  suggestions?: string[]
+interface Message {
+  role: 'user' | 'assistant'
+  content: string
 }
+
+const msalInstance = new PublicClientApplication(msalConfig)
 
 export default function CopilotChat() {
   const [messages, setMessages] = useState<Message[]>([])
+  const [conversationId, setConversationId] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [token, setToken] = useState<string | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Start conversation on mount
   useEffect(() => {
-    const startConversation = async () => {
-      const res = await fetch('/api/copilot/start')
-      const data = await res.json()
+    const loginAndStart = async () => {
+      await msalInstance.initialize()
 
-      if (data.message) {
-        setMessages([
-          { from: 'copilot', text: data.message, suggestions: data.suggestions },
-        ])
+      const accounts = msalInstance.getAllAccounts()
+      let result: AuthenticationResult
+
+      if (accounts.length > 0) {
+        result = await msalInstance.acquireTokenSilent({
+          scopes: ['https://api.powerplatform.com/.default'],
+          account: accounts[0],
+        })
+      } else {
+        result = await msalInstance.loginPopup({
+          scopes: ['https://api.powerplatform.com/.default'],
+        })
       }
+
+      setToken(result.accessToken)
+
+      const res = await fetch('/api/copilot/start', {
+        headers: { Authorization: `Bearer ${result.accessToken}` },
+      })
+      const data = await res.json()
+      setConversationId(data.conversation.id)
+      setMessages([{ role: 'assistant', content: data.text }])
     }
 
-    startConversation()
+    loginAndStart().catch(console.error)
   }, [])
 
-  const sendMessage = async (text: string) => {
-    setLoading(true)
-    setMessages((prev) => [...prev, { from: 'user', text }])
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  const sendMessage = async () => {
+    if (!input.trim() || !conversationId || !token) return
+
+    const userMessage = input.trim()
+    setMessages((prev) => [...prev, { role: 'user', content: userMessage }])
     setInput('')
+    setLoading(true)
 
-    const res = await fetch('/api/copilot/ask', {
-      method: 'POST',
-      body: JSON.stringify({ message: text }),
-      headers: { 'Content-Type': 'application/json' },
-    })
+    try {
+      const res = await fetch('/api/copilot/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text: userMessage, conversationId }),
+      })
+      const replies = await res.json()
 
-    const data = await res.json()
-    if (data.replies) {
-      const replyMessages: Message[] = data.replies.map((r: any) => ({
-        from: 'copilot',
-        text: r.text,
-        suggestions: r.suggestions,
-      }))
-      setMessages((prev) => [...prev, ...replyMessages])
+      const assistantReplies = Array.isArray(replies)
+        ? replies
+            .filter((r: any) => r.type === 'message')
+            .map((r: any) => ({ role: 'assistant', content: r.text }))
+        : []
+
+      setMessages((prev) => [...prev, ...assistantReplies])
+    } catch (e) {
+      console.error('Failed to send message', e)
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (input.trim()) {
-      await sendMessage(input.trim())
-    }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') sendMessage()
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="space-y-4 border rounded p-4 h-[500px] overflow-y-auto mb-4 bg-white shadow">
+    <div className="max-w-xl mx-auto flex flex-col h-[90vh] border rounded shadow bg-white">
+      <div className="flex-1 p-4 overflow-y-auto">
         {messages.map((msg, i) => (
-          <div key={i} className={`text-sm ${msg.from === 'user' ? 'text-right' : 'text-left'}`}>
+          <div key={i} className={`mb-3 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
             <div
-              className={`inline-block px-4 py-2 rounded-xl ${
-                msg.from === 'user'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
+              className={`inline-block px-4 py-2 rounded-lg ${
+                msg.role === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-800'
               }`}
             >
-              {msg.text}
+              {msg.content}
             </div>
-            {msg.from === 'copilot' && msg.suggestions && msg.suggestions.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {msg.suggestions.map((sug, idx) => (
-                  <button
-                    key={idx}
-                    className="text-xs px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                    onClick={() => sendMessage(sug)}
-                  >
-                    {sug}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         ))}
-        {loading && <p className="text-sm text-gray-500">Copilot is typing...</p>}
+        <div ref={scrollRef} />
       </div>
-
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <div className="p-4 border-t flex gap-2">
         <input
+          type="text"
+          className="flex-1 border px-3 py-2 rounded"
+          placeholder="Type your message…"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask something..."
-          className="flex-1 border rounded p-2"
+          onKeyDown={handleKeyDown}
+          disabled={loading}
         />
         <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+          onClick={sendMessage}
           disabled={loading || !input.trim()}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
         >
           Send
         </button>
-      </form>
+      </div>
     </div>
   )
 }
