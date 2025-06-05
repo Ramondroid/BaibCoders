@@ -1,7 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import Image from "next/image";
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 'use client'
@@ -98,7 +101,12 @@ export default function Profile() {
     window.location.href = '/login'
   }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+
+  if (loading) return <div className="text-white text-center mt-20">Loading...</div>
+>>>>>>> Stashed changes
 
   if (loading) return <div className="text-white text-center mt-20">Loading...</div>
 >>>>>>> Stashed changes
@@ -110,12 +118,15 @@ export default function Home() {
   return (
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div>
       <p className="mx-auto w-fit text-center">Contact Us</p>
     </div>
   );
 }
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1e1f24] to-[#2a2b31] px-4">
@@ -191,6 +202,10 @@ export default function Home() {
     </div>
   )
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
 =======

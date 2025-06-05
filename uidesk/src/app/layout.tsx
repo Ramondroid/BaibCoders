@@ -10,6 +10,9 @@ import { authOptions } from '@/lib/auth';
 import NoAuthNavbar from "@/components/NoAuthNavbar";
 import SupabaseProvider from '@/components/SupabaseProvider' 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
