@@ -2,9 +2,14 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthNavbar from '@/components/AuthNavbar';
+<<<<<<< Updated upstream
 import noAuthNavbar from "@/components/noAuthNavbar";
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth'; 
+=======
+import NoAuthNavbar from "@/components/NoAuthNavbar";
+import SupabaseProvider from '@/components/SupabaseProvider' 
+>>>>>>> Stashed changes
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+<<<<<<< Updated upstream
       <head>
         <link
           href="https://api.fontshare.com/v2/css?f[]=author@1&display=swap"
@@ -35,7 +41,16 @@ export default function RootLayout({
       </head>
       <body>
         <AuthNavbar/> 
+=======
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <SupabaseProvider>
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl font-bold mb-4">Uina</h1>
+          </div>
+        {isLoggedIn ? <AuthNavbar /> : <NoAuthNavbar />}
+>>>>>>> Stashed changes
         {children}
+        </SupabaseProvider>
       </body>
     </html>
   );
