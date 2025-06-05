@@ -9,6 +9,9 @@ import { authOptions } from '@/lib/auth';
 =======
 import NoAuthNavbar from "@/components/NoAuthNavbar";
 import SupabaseProvider from '@/components/SupabaseProvider' 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 const geistSans = Geist({

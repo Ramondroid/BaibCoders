@@ -1,6 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import Image from "next/image";
 =======
+=======
+>>>>>>> Stashed changes
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -94,6 +97,11 @@ export default function Profile() {
     await supabase.auth.signOut()
     window.location.href = '/login'
   }
+<<<<<<< Updated upstream
+=======
+
+  if (loading) return <div className="text-white text-center mt-20">Loading...</div>
+>>>>>>> Stashed changes
 
   if (loading) return <div className="text-white text-center mt-20">Loading...</div>
 >>>>>>> Stashed changes
@@ -101,12 +109,15 @@ export default function Profile() {
 export default function Home() {
   return (
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div>
       <p className="mx-auto w-fit text-center">Contact Us</p>
     </div>
   );
 }
 =======
+=======
+>>>>>>> Stashed changes
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1e1f24] to-[#2a2b31] px-4">
       <div className="bg-white/10 backdrop-blur-lg border border-white/10 text-white p-8 rounded-2xl shadow-2xl w-full max-w-xl space-y-6">
         <h2 className="text-3xl font-bold text-purple-400 text-center">Profile Settings</h2>
@@ -179,5 +190,9 @@ export default function Home() {
       </div>
     </div>
   )
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
