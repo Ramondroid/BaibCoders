@@ -1,8 +1,11 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import Image from "next/image";
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -102,8 +105,13 @@ export default function Profile() {
   }
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 =======
+=======
+
+  if (loading) return <div className="text-white text-center mt-20">Loading...</div>
+>>>>>>> Stashed changes
 
   if (loading) return <div className="text-white text-center mt-20">Loading...</div>
 >>>>>>> Stashed changes
@@ -119,12 +127,15 @@ export default function Home() {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <div>
       <p className="mx-auto w-fit text-center">Contact Us</p>
     </div>
   );
 }
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -203,6 +214,10 @@ export default function Home() {
   )
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
 =======

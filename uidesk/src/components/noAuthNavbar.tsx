@@ -15,11 +15,14 @@ const noAuthNavbar: React.FC = () => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <nav className="w-full px-6 py-4 bg-black text-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold">Uina</Link>
         <div className="space-x-6">
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
