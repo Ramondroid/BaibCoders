@@ -3,7 +3,7 @@
 import { login } from "@/app/api/auth/login/route";
 export function LoginForm() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1e1f24] to-[#2a2b31] px-4">
+    <div className="min-h-[calc(100vh-4.25rem)] flex items-center justify-center px-4">
       <form
         
         className="bg-white/10 backdrop-blur-lg border border-white/10 text-white p-8 rounded-2xl shadow-2xl w-full max-w-md"

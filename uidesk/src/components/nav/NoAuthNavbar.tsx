@@ -5,10 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
-const navLinks = [
-  { href: '/signup', label: 'Sign Up' },
-  { href: '/login', label: 'Login' },
-];
 
 const NoAuthNavbar: React.FC = () => {
   const pathname = usePathname();
@@ -25,43 +21,7 @@ const NoAuthNavbar: React.FC = () => {
           Ui<span className="text-white">na</span>
         </Link>
 
-        <div className="hidden md:flex space-x-6 text-sm sm:text-base">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`hover:text-purple-300 transition ${
-                pathname === href ? 'text-purple-400 font-semibold underline underline-offset-4' : ''
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden px-4 pb-4 space-y-2 bg-[#1e1f24] text-sm">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`block py-2 px-3 rounded hover:bg-purple-800 transition ${
-                pathname === href ? 'bg-purple-700 text-white font-semibold' : 'text-gray-300'
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
+     </div>
     </nav>
   );
 };

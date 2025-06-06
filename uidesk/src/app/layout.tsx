@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { createClient } from "@/lib/supabase/server"; // ✅ use SSR-aware client
+import { createClient } from "@/lib/supabase/server"; //
 import AuthNavbar from "@/components/nav/AuthNavbar";
 import NoAuthNavbar from "@/components/nav/NoAuthNavbar";
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient(); // ✅ use server-aware Supabase client
+  const supabase = createClient(); 
 
   const {
     data: { user },
