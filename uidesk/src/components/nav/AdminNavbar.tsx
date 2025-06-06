@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client"; // adjust path as needed
 import { useRouter } from "next/navigation";
+import { logout } from "@/actions/logout";
 
 const navLinks = [
   { href: "/teacher/dashboard", label: "Dashboard" },
@@ -85,16 +86,15 @@ const AdminAuthNavbar: React.FC = () => {
               {label}
             </Link>
           ))}
-
+          <form >
           <button
-            onClick={() => {
-              setIsOpen(false);
-              handleLogout();
-            }}
+          formAction={logout}
+          type="submit"
             className="block w-full text-left py-2 px-3 rounded bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
           >
             Logout
           </button>
+          </form>
         </div>
       )}
     </nav>

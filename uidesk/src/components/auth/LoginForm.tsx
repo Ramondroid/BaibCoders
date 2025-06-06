@@ -1,6 +1,6 @@
 'use client'
 
-import { login } from "@/app/api/auth/login/route";
+import { login } from "@/actions/login";
 export function LoginForm() {
   return (
     <div className="min-h-[calc(100vh-4.25rem)] flex items-center justify-center px-4">
