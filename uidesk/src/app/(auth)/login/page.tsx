@@ -14,7 +14,7 @@ export default function Page() {
             All-in-one academic help desk. From course questions to campus concerns, get real help, real fast — so you can focus on learning
           </p>
         </section>
-        <section className="md:w-[30%] w-full flex flex-col items-center justify-center space-y-6"> <LoginForm /></section>
+        <section className="md:w-[30%] w-full flex flex-col items-center justify-center space-y-6"> yup<LoginForm /></section>
       </div>
    </main>
   );

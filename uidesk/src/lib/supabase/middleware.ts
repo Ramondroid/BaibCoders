@@ -32,15 +32,19 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  if (
-    !user &&
-    !pathname.startsWith('/login') &&
-    !pathname.startsWith('/auth')
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
-  }
+const publicPaths = ['/', '/about', '/public'];
+
+if (
+  !user &&
+  !publicPaths.some((path) => pathname.startsWith(path)) &&
+  !pathname.startsWith('/login') &&
+  !pathname.startsWith('/auth')
+) {
+  const url = request.nextUrl.clone();
+  url.pathname = '/login';
+  return NextResponse.redirect(url);
+}
+
 
   // 🧠 If the route is protected, fetch the role
   if (user && (pathname.startsWith('/student') || pathname.startsWith('/teacher'))) {
