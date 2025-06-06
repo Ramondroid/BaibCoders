@@ -153,7 +153,7 @@ const sendMessage = async (overrideInput?: string) => {
       <div className="p-4 border-t flex gap-2">
         <input
           type="text"
-          className="flex-1 border px-3 py-2 rounded"
+          className="flex-1 border px-3 py-2 rounded text-black"
           placeholder="Type your message…"
           value={input}
           onChange={(e) => setInput(e.target.value)}
