@@ -6,10 +6,10 @@ export function LoginForm() {
     <div className="min-h-[calc(100vh-4.25rem)] flex items-center justify-center px-4">
       <form
         
-        className="bg-white/10 backdrop-blur-lg border border-white/10 text-white p-8 rounded-2xl shadow-2xl w-full max-w-md"
+        className="bg-white/10 backdrop-blur-lg border border-white/10 text-white p-8 rounded-2xl shadow-2xl w-[1200px] h-[380px] max-w-md"
       >
-        <h2 className="text-3xl font-bold mb-6 text-center text-purple-400">
-          Welcome Back 👋
+        <h2 className="text-5xl font-bold mb-6 text-center text-pwhite-400">
+          Sign In
         </h2>
 
         <input
@@ -30,7 +30,7 @@ export function LoginForm() {
         <button
           type="submit"
           formAction={login}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-md mt-6 font-semibold transition"
+          className="w-full h-[60px] bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-md mt-6 font-semibold transition"
         >
           Login
         </button>

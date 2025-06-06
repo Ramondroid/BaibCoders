@@ -23,6 +23,7 @@ const AdminAuthNavbar: React.FC = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/"); 
+    router.refresh();
   };
 
   return (

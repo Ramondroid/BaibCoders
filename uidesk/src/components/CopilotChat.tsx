@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { PublicClientApplication, type AuthenticationResult } from '@azure/msal-browser'
-import { msalConfig } from '@/lib/msalConfig' // You create this
+import { msalConfig } from '@/lib/msalConfig'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -18,116 +18,113 @@ export default function CopilotChat() {
   const [loading, setLoading] = useState(false)
   const [token, setToken] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-const [quickReplies, setQuickReplies] = useState<string[]>([])
+  const [quickReplies, setQuickReplies] = useState<string[]>([])
+  const loginInProgress = useRef(false)
 
+  useEffect(() => {
+    const loginAndStart = async () => {
+      if (loginInProgress.current) return
+      loginInProgress.current = true
 
-const loginInProgress = useRef(false)
+      try {
+        await msalInstance.initialize()
 
-useEffect(() => {
-  const loginAndStart = async () => {
-    if (loginInProgress.current) return
-    loginInProgress.current = true
+        const accounts = msalInstance.getAllAccounts()
+        let result: AuthenticationResult
 
-    try {
-      await msalInstance.initialize()
+        if (accounts.length > 0) {
+          result = await msalInstance.acquireTokenSilent({
+            scopes: ['https://api.powerplatform.com/.default'],
+            account: accounts[0],
+          })
+        } else {
+          result = await msalInstance.loginPopup({
+            scopes: ['https://api.powerplatform.com/.default'],
+          })
+        }
 
-      const accounts = msalInstance.getAllAccounts()
-      let result: AuthenticationResult
+        setToken(result.accessToken)
 
-      if (accounts.length > 0) {
-        result = await msalInstance.acquireTokenSilent({
-          scopes: ['https://api.powerplatform.com/.default'],
-          account: accounts[0],
+        const res = await fetch('/api/copilot/start', {
+          headers: { Authorization: `Bearer ${result.accessToken}` },
         })
-      } else {
-        result = await msalInstance.loginPopup({
-          scopes: ['https://api.powerplatform.com/.default'],
-        })
+
+        const data = await res.json()
+        setConversationId(data.conversation.id)
+        setMessages([{ role: 'assistant', content: data.text }])
+      } catch (err) {
+        console.error('Authentication failed', err)
+      } finally {
+        loginInProgress.current = false
       }
-
-      setToken(result.accessToken)
-
-      const res = await fetch('/api/copilot/start', {
-        headers: { Authorization: `Bearer ${result.accessToken}` },
-      })
-      const data = await res.json()
-      setConversationId(data.conversation.id)
-      setMessages([{ role: 'assistant', content: data.text }])
-    } catch (err) {
-      console.error('Authentication failed', err)
-    } finally {
-      loginInProgress.current = false
     }
-  }
 
-  loginAndStart()
-}, [])
-
+    loginAndStart()
+  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-const sendMessage = async (overrideInput?: string) => {
-  const messageToSend = overrideInput ?? input.trim()
-  if (!messageToSend || !conversationId || !token) return
+  const sendMessage = async (overrideInput?: string) => {
+    const messageToSend = overrideInput ?? input.trim()
+    if (!messageToSend || !conversationId || !token) return
 
-  setMessages((prev) => [...prev, { role: 'user', content: messageToSend }])
-  setInput('')
-  setLoading(true)
-  setQuickReplies([]) // clear existing replies
+    setMessages((prev) => [...prev, { role: 'user', content: messageToSend }])
+    setInput('')
+    setLoading(true)
+    setQuickReplies([])
 
-  try {
-    const res = await fetch('/api/copilot/ask', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ text: messageToSend, conversationId }),
-    })
+    try {
+      const res = await fetch('/api/copilot/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text: messageToSend, conversationId }),
+      })
 
-    const replies = await res.json()
+      const replies = await res.json()
 
-    const assistantReplies = Array.isArray(replies)
-      ? replies
-          .filter((r: any) => r.type === 'message')
-          .map((r: any) => ({ role: 'assistant' as const, content: r.text }))
-      : []
+      const assistantReplies = Array.isArray(replies)
+        ? replies
+            .filter((r: any) => r.type === 'message')
+            .map((r: any) => ({ role: 'assistant' as const, content: r.text }))
+        : []
 
-    setMessages((prev) => [...prev, ...assistantReplies])
+      setMessages((prev) => [...prev, ...assistantReplies])
 
-    // 🟡 NEW: Handle quick replies (suggested actions)
-    const newQuickReplies = Array.isArray(replies)
-      ? replies.flatMap((r: any) => r.suggestedActions?.actions?.map((a: any) => a.text) || [])
-      : []
+      const newQuickReplies = Array.isArray(replies)
+        ? replies.flatMap((r: any) => r.suggestedActions?.actions?.map((a: any) => a.text) || [])
+        : []
 
-    setQuickReplies(newQuickReplies)
-  } catch (e) {
-    console.error('Failed to send message', e)
-  } finally {
-    setLoading(false)
+      setQuickReplies(newQuickReplies)
+    } catch (e) {
+      console.error('Failed to send message', e)
+    } finally {
+      setLoading(false)
+    }
   }
-}
-
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') sendMessage()
   }
 
-
-
-
   return (
-    <div className="max-w-xl mx-auto flex flex-col h-[90vh] border rounded shadow bg-white">
-      <div className="flex-1 p-4 overflow-y-auto">
+    <div className="w-full h-full flex flex-col bg-white dark:bg-[#1e1f24] text-black dark:text-white">
+      {/* Messages */}
+      <div className="flex-1 p-4 overflow-y-auto space-y-3">
         {messages.map((msg, i) => (
-          <div key={i} className={`mb-3 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+          <div
+            key={i}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
             <div
-              className={`inline-block px-4 py-2 rounded-lg ${
+              className={`max-w-[80%] px-4 py-2 rounded-xl text-sm ${
                 msg.role === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-800'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 dark:bg-[#333] text-gray-800 dark:text-white'
               }`}
             >
               {msg.content}
@@ -136,35 +133,38 @@ const sendMessage = async (overrideInput?: string) => {
         ))}
         <div ref={scrollRef} />
       </div>
-      {quickReplies.length > 0 && (
-  <div className="px-4 pb-2 flex flex-wrap gap-2">
-    {quickReplies.map((text, idx) => (
-      <button
-        key={idx}
-        onClick={() => sendMessage(text)}
-        className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200 transition text-sm"
-      >
-        {text}
-      </button>
-    ))}
-  </div>
-)}
 
-      <div className="p-4 border-t flex gap-2">
+      {/* Quick Replies */}
+      {quickReplies.length > 0 && (
+        <div className="px-4 pb-2 flex flex-wrap gap-2">
+          {quickReplies.map((text, idx) => (
+            <button
+              key={idx}
+              onClick={() => sendMessage(text)}
+              className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-white px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition text-sm"
+            >
+              {text}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Input */}
+      <div className="p-4 border-t border-gray-200 dark:border-white/10 flex gap-2">
         <input
           type="text"
-          className="flex-1 border px-3 py-2 rounded text-black"
+          className="flex-1 border px-3 py-2 rounded-md text-black dark:text-white dark:bg-[#2c2c2e] border-gray-300 dark:border-white/20"
           placeholder="Type your message…"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={loading}
         />
-        
+
         <button
           onClick={() => sendMessage()}
           disabled={loading || !input.trim()}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
         >
           Send
         </button>
