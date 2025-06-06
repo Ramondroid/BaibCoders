@@ -33,7 +33,7 @@ const AdminAuthNavbar: React.FC = () => {
 
         {/* Logo */}
         <Link
-          href="/"
+          href="/student/dashboard"
           className="text-3xl font-extrabold tracking-tight text-purple-400 hover:text-purple-300 transition"
         >
           Ui<span className="text-white">na</span>

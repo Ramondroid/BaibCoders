@@ -34,9 +34,9 @@ export async function login(formData: FormData) {
   revalidatePath('/', 'layout');
 
   if (role === 'Student') {
-    redirect('/(dashboard)/student/dashboard');
+    redirect('/student/dashboard');
   } else if (role === 'Teacher') {
-    redirect('/(dashboard)/teacher/dashboard');
+    redirect('/teacher/dashboard');
   } else {
     redirect('/');
   }

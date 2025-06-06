@@ -33,7 +33,7 @@ const AdminAuthNavbar: React.FC = () => {
 
         {/* Logo */}
         <Link
-          href="/"
+          href="/teacher/dashboard"
           className="text-3xl font-extrabold tracking-tight text-purple-400 hover:text-purple-300 transition"
         >
           Ui<span className="text-white">na</span>
@@ -86,15 +86,16 @@ const AdminAuthNavbar: React.FC = () => {
               {label}
             </Link>
           ))}
-          <form >
+
           <button
-          formAction={logout}
-          type="submit"
-            className="block w-full text-left py-2 px-3 rounded bg-purple-700 text-white font-semibold hover:bg-purple-800 transition"
+            onClick={() => {
+              setIsOpen(false);
+              handleLogout();
+            }}
+            className="block w-full text-left py-2 px-3 rounded  text-white font-semibold bg-purple-700 hover:bg-purple-800 transition"
           >
             Logout
           </button>
-          </form>
         </div>
       )}
     </nav>
