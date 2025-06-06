@@ -1,10 +1,15 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { createClient } from "@/lib/supabase/server";
+<<<<<<< Updated upstream
 import AuthNavbar from "@/components/nav/AuthNavbar";
 import NoAuthNavbar from "@/components/nav/NoAuthNavbar";
 import AdminAuthNavbar from "@/components/nav/AdminNavbar";
+=======
+import NavbarWrapper from "@/components/nav/NavbarWrapper"; // Capitalized import
+>>>>>>> Stashed changes
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,11 +26,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+<<<<<<< Updated upstream
   const supabase = createClient();
+=======
+  const supabase = await createClient();
+>>>>>>> Stashed changes
 
   const {
     data: { user },
-  } = await (await supabase).auth.getUser();
+  } = await supabase.auth.getUser(); // Only 1 await here
 
   let role = null;
 
@@ -44,9 +53,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+<<<<<<< Updated upstream
         {!user && <NoAuthNavbar />}
         {user && role === "Teacher" && <AdminAuthNavbar />}
         {user && role !== "Teacher" && <AuthNavbar />}
+=======
+        <NavbarWrapper />
+>>>>>>> Stashed changes
         {children}
       </body>
     </html>

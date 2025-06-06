@@ -6,8 +6,8 @@
 
   export default function DashboardPage() {
     return (
-      <div className="min-h-screen flex bg-gray-100">
-        <CopilotIframe />
+      <div className="min-h-screen flex">
+<p>hello Student</p>
       </div>
     );
   }

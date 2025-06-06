@@ -13,10 +13,14 @@ export async function login(formData: FormData) {
   const { data: authData, error: authError } =
     await supabase.auth.signInWithPassword({ email, password });
 
+    console.log("Auth data:", authData);
+
   if (authError || !authData.user) {
     console.error("Login failed:", authError?.message);
     redirect("/error");
   }
+
+  const username = authData.user.user_metadata?.username || email
 
   const { data: userRecord, error: userError } = await supabase
     .from("Users")
@@ -30,6 +34,7 @@ export async function login(formData: FormData) {
   }
 
   const role = userRecord.role;
+  
   console.log("User role:", role);
 
   revalidatePath("/", "layout");
@@ -42,3 +47,5 @@ export async function login(formData: FormData) {
     redirect("/");
   }
 }
+
+

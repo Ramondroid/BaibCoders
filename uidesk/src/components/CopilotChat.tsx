@@ -21,8 +21,14 @@ export default function CopilotChat() {
 const [quickReplies, setQuickReplies] = useState<string[]>([])
 
 
-  useEffect(() => {
-    const loginAndStart = async () => {
+const loginInProgress = useRef(false)
+
+useEffect(() => {
+  const loginAndStart = async () => {
+    if (loginInProgress.current) return
+    loginInProgress.current = true
+
+    try {
       await msalInstance.initialize()
 
       const accounts = msalInstance.getAllAccounts()
@@ -47,10 +53,16 @@ const [quickReplies, setQuickReplies] = useState<string[]>([])
       const data = await res.json()
       setConversationId(data.conversation.id)
       setMessages([{ role: 'assistant', content: data.text }])
+    } catch (err) {
+      console.error('Authentication failed', err)
+    } finally {
+      loginInProgress.current = false
     }
+  }
 
-    loginAndStart().catch(console.error)
-  }, [])
+  loginAndStart()
+}, [])
+
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
