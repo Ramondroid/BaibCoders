@@ -2,7 +2,6 @@
 
   import React from 'react';
 
-import CopilotChat from '@/components/CopilotChat';
 import CopilotChatWrapper from '@/components/CopilotChatWrapper';
 
   export default function DashboardPage() {
@@ -21,8 +20,8 @@ import CopilotChatWrapper from '@/components/CopilotChatWrapper';
             {/* Cards */}
             <div className="flex gap-6">
             <div className="bg-gray-100 hover:bg-gray-200 transition rounded-xl p-6 shadow-md w-full max-w-sm">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">📚 Today's Event</h2>
-              <p className="text-gray-600">Need magreflect ng today's event here</p>
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">📚 Today&apos;s Event</h2>
+              <p className="text-gray-600">Need magreflect ng today&apos;s event here</p>
             </div>
   
             <div className="bg-gray-100 hover:bg-gray-200 transition rounded-xl p-6 shadow-md w-full max-w-sm">
@@ -32,7 +31,7 @@ import CopilotChatWrapper from '@/components/CopilotChatWrapper';
   
             <div className="bg-gray-100 hover:bg-gray-200 transition rounded-xl p-6 shadow-md w-full max-w-sm">
               <h2 className="text-xl font-semibold text-gray-800 mb-2">🎯 Need help?</h2>
-              <p className="text-gray-600">Use Uina's chatbot to ask courses and campus questions</p>
+              <p className="text-gray-600">Use Uina&apos;s chatbot to ask courses and campus questions</p>
           </div>
         </div>
       </div>
