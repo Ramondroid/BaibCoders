@@ -18,6 +18,8 @@ export default function CopilotChat() {
   const [loading, setLoading] = useState(false)
   const [token, setToken] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+const [quickReplies, setQuickReplies] = useState<string[]>([])
+
 
   useEffect(() => {
     const loginAndStart = async () => {
@@ -54,42 +56,55 @@ export default function CopilotChat() {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const sendMessage = async () => {
-    if (!input.trim() || !conversationId || !token) return
+const sendMessage = async (overrideInput?: string) => {
+  const messageToSend = overrideInput ?? input.trim()
+  if (!messageToSend || !conversationId || !token) return
 
-    const userMessage = input.trim()
-    setMessages((prev) => [...prev, { role: 'user', content: userMessage }])
-    setInput('')
-    setLoading(true)
+  setMessages((prev) => [...prev, { role: 'user', content: messageToSend }])
+  setInput('')
+  setLoading(true)
+  setQuickReplies([]) // clear existing replies
 
-    try {
-      const res = await fetch('/api/copilot/ask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ text: userMessage, conversationId }),
-      })
-      const replies = await res.json()
+  try {
+    const res = await fetch('/api/copilot/ask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ text: messageToSend, conversationId }),
+    })
 
-      const assistantReplies = Array.isArray(replies)
-        ? replies
-            .filter((r: any) => r.type === 'message')
-            .map((r: any) => ({ role: 'assistant', content: r.text }))
-        : []
+    const replies = await res.json()
 
-      setMessages((prev) => [...prev, ...assistantReplies])
-    } catch (e) {
-      console.error('Failed to send message', e)
-    } finally {
-      setLoading(false)
-    }
+    const assistantReplies = Array.isArray(replies)
+      ? replies
+          .filter((r: any) => r.type === 'message')
+          .map((r: any) => ({ role: 'assistant' as const, content: r.text }))
+      : []
+
+    setMessages((prev) => [...prev, ...assistantReplies])
+
+    // 🟡 NEW: Handle quick replies (suggested actions)
+    const newQuickReplies = Array.isArray(replies)
+      ? replies.flatMap((r: any) => r.suggestedActions?.actions?.map((a: any) => a.text) || [])
+      : []
+
+    setQuickReplies(newQuickReplies)
+  } catch (e) {
+    console.error('Failed to send message', e)
+  } finally {
+    setLoading(false)
   }
+}
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') sendMessage()
   }
+
+
+
 
   return (
     <div className="max-w-xl mx-auto flex flex-col h-[90vh] border rounded shadow bg-white">
@@ -109,6 +124,20 @@ export default function CopilotChat() {
         ))}
         <div ref={scrollRef} />
       </div>
+      {quickReplies.length > 0 && (
+  <div className="px-4 pb-2 flex flex-wrap gap-2">
+    {quickReplies.map((text, idx) => (
+      <button
+        key={idx}
+        onClick={() => sendMessage(text)}
+        className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200 transition text-sm"
+      >
+        {text}
+      </button>
+    ))}
+  </div>
+)}
+
       <div className="p-4 border-t flex gap-2">
         <input
           type="text"
@@ -119,6 +148,7 @@ export default function CopilotChat() {
           onKeyDown={handleKeyDown}
           disabled={loading}
         />
+        
         <button
           onClick={sendMessage}
           disabled={loading || !input.trim()}
