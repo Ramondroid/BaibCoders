@@ -1,9 +1,8 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cookies } from 'next/headers';
-import AuthNavbar from '@/components/nav/AuthNavbar';
+import { createClient } from "@/lib/supabase/server"; // ✅ use SSR-aware client
+import AuthNavbar from "@/components/nav/AuthNavbar";
 import NoAuthNavbar from "@/components/nav/NoAuthNavbar";
 
 const geistSans = Geist({
@@ -21,14 +20,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const cookieStore = await cookies();
-  const authToken = cookieStore.get('auth_token');
-  const isLoggedIn = !!authToken;
+  const supabase = createClient(); // ✅ use server-aware Supabase client
+
+  const {
+    data: { user },
+  } = await (await supabase).auth.getUser();
 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {isLoggedIn ? <AuthNavbar /> : <NoAuthNavbar />}
+        {user ? <AuthNavbar /> : <NoAuthNavbar />}
         {children}
       </body>
     </html>
