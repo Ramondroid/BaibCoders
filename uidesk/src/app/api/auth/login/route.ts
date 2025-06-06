@@ -7,41 +7,36 @@ import { createClient } from "@/lib/supabase/server";
 export async function login(formData: FormData) {
   const supabase = await createClient();
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  const { data: authData, error } = await supabase.auth.signInWithPassword(data);
+  const { data: authData, error: authError } =
+    await supabase.auth.signInWithPassword({ email, password });
 
-  if (error || !authData.user) {
-    console.error("Login failed:", error?.message);
+  if (authError || !authData.user) {
+    console.error("Login failed:", authError?.message);
     redirect("/error");
   }
 
-  const userEmail = authData.user.email;
-
-  const { data: userRecord, error: roleError } = await supabase
-    .from("users")
+  const { data: userRecord, error: userError } = await supabase
+    .from("Users")
     .select("role")
-    // TODO Fix this to use userid instead of email 
-    // This is a temporary fix, ideally we should use the user ID
-    // .eq("id", userId)
-    .eq("email", userEmail)
+    .eq("email", email)
     .single();
 
-  if (roleError || !userRecord) {
-    console.error("Role lookup failed:", roleError?.message);
+  if (userError || !userRecord) {
+    console.error("Error fetching user role:", userError?.message);
     redirect("/error");
   }
 
   const role = userRecord.role;
+  console.log("User role:", role);
 
   revalidatePath("/", "layout");
 
-  if (role === "student") {
+  if (role === "Student") {
     redirect("/student/dashboard");
-  } else if (role === "teacher") {
+  } else if (role === "Teacher") {
     redirect("/teacher/dashboard");
   } else {
     redirect("/");
