@@ -6,14 +6,14 @@ import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/tickets', label: 'Tickets' },
-  { href: '/kms', label: 'KMS' },
-  { href: '/enroll', label: 'Enroll' },
+  { href: '/teacher/dashboard', label: 'Dashboard' },
+  { href: '/teacher/tickets', label: 'Tickets' },
+  { href: '/teacher/ms', label: 'KMS' },
+  { href: '/teacher/enroll', label: 'Enroll' },
   { href: '/profile', label: 'Profile' },
 ];
 
-const AuthNavbar: React.FC = () => {
+const AdminAuthNavbar: React.FC = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -75,4 +75,4 @@ const AuthNavbar: React.FC = () => {
   );
 };
 
-export default AuthNavbar
+export default AdminAuthNavbar

@@ -16,10 +16,10 @@ export default function HomePage() {
         {/* Left side (70%) */}
         <section className="md:w-[70%] w-full flex flex-col justify-center items-start space-y-6">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
-            Uina Portal
+            Welcome to Uina
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl">
-            Welcome to Uina — your academic command center. Whether you're managing coursework or accessing your faculty tools, everything starts here.
+            All-in-one academic help desk. From course questions to campus concerns, get real help, real fast — so you can focus on learning
           </p>
         </section>
 
