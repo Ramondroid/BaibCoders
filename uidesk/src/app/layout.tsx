@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cookies } from 'next/headers';
-import AuthNavbar from '@/components/AuthNavbar';
-import NoAuthNavbar from "@/components/NoAuthNavbar";
+import AuthNavbar from '@/components/nav/AuthNavbar';
+import NoAuthNavbar from "@/components/nav/NoAuthNavbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
