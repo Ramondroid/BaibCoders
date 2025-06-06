@@ -9,6 +9,18 @@ interface Message {
   content: string
 }
 
+interface SuggestedAction {
+  text: string
+}
+
+interface AssistantReply {
+  type: string
+  text: string
+  suggestedActions?: {
+    actions: SuggestedAction[]
+  }
+}
+
 const msalInstance = new PublicClientApplication(msalConfig)
 
 export default function CopilotChat() {
@@ -85,18 +97,18 @@ export default function CopilotChat() {
         body: JSON.stringify({ text: messageToSend, conversationId }),
       })
 
-      const replies = await res.json()
+      const replies: AssistantReply[] = await res.json()
 
       const assistantReplies = Array.isArray(replies)
         ? replies
-            .filter((r: any) => r.type === 'message')
-            .map((r: any) => ({ role: 'assistant' as const, content: r.text }))
+            .filter((r) => r.type === 'message')
+            .map((r) => ({ role: 'assistant' as const, content: r.text }))
         : []
 
       setMessages((prev) => [...prev, ...assistantReplies])
 
       const newQuickReplies = Array.isArray(replies)
-        ? replies.flatMap((r: any) => r.suggestedActions?.actions?.map((a: any) => a.text) || [])
+        ? replies.flatMap((r) => r.suggestedActions?.actions?.map((a) => a.text) || [])
         : []
 
       setQuickReplies(newQuickReplies)

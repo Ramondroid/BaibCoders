@@ -1,9 +1,6 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/server";
-import { Link } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+
 
 export default function Home() {
   

@@ -16,7 +16,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value  }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
@@ -48,7 +48,7 @@ if (
 
   // 🧠 If the route is protected, fetch the role
   if (user && (pathname.startsWith('/student') || pathname.startsWith('/teacher'))) {
-    const { data: userRecord, error } = await supabase
+    const { data: userRecord } = await supabase
       .from('Users')
       .select('role')
       .eq('email', user.email)

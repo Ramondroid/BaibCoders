@@ -1,8 +1,6 @@
 'use client';
 
 
-import AuthNavbar from "@/components/nav/AuthNavbar";
-import NoAuthNavbar from "@/components/nav/NoAuthNavbar";
 import { useRouter } from 'next/navigation';
 import React from 'react';
 

@@ -1,9 +1,6 @@
   'use client';
 
   import React from 'react';
-  import { FaUser, FaChartPie, FaCog } from 'react-icons/fa';
-  import CopilotIframe from "@/components/CopilotIframe";
-  import CopilotChat from '@/components/CopilotChat';
 import CopilotChatWrapper from '@/components/CopilotChatWrapper';
 
   export default function DashboardPage() {

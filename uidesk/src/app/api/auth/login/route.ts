@@ -20,7 +20,6 @@ export async function login(formData: FormData) {
     redirect("/error");
   }
 
-  const username = authData.user.user_metadata?.username || email
 
   const { data: userRecord, error: userError } = await supabase
     .from("Users")

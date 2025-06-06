@@ -1,14 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
 
 
 const NoAuthNavbar: React.FC = () => {
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <nav className="w-full bg-gradient-to-r from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] text-white shadow-lg sticky top-0 z-50 font-sans">
