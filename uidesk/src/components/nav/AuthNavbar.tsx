@@ -11,8 +11,8 @@ import { logout } from "@/actions/logout";
 const navLinks = [
   { href: '/student/dashboard', label: 'Dashboard' },
   { href: '/student/tickets', label: 'Tickets' },
-  { href: '/about', label: 'About' },
-  { href: '/services', label: 'Services' }
+  { href: '/events', label: 'Events' },
+  { href: '/courses', label: 'Courses' }
 ];
 
 const AdminAuthNavbar: React.FC = () => {
