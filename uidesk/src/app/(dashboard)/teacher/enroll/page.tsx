@@ -5,12 +5,13 @@ import { Save, UserPlus } from 'lucide-react';
 import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 export default function UserForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    hashedPassword: '',
-    course: '',
-  });
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  password: '',  // rename here
+  course: '',
+});
+
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
@@ -23,9 +24,9 @@ export default function UserForm() {
     setIsSubmitting(true);
     setSubmitMessage(null);
 
-    const { name, email, hashedPassword, course } = formData;
+    const { name, email, password, course } = formData;
 
-    if (!name || !email || !hashedPassword || !course) {
+    if (!name || !email || !password || !course) {
       setSubmitMessage('❌ All fields are required.');
       setIsSubmitting(false);
       return;
@@ -42,7 +43,7 @@ export default function UserForm() {
       if (!response.ok) throw new Error(result.error || 'Unknown error');
 
       setSubmitMessage('✅ User added successfully!');
-      setFormData({ name: '', email: '', hashedPassword: '', course: '' });
+      setFormData({ name: '', email: '', password: '', course: '' });
     } catch (error: any) {
       setSubmitMessage(`❌ Error: ${error.message}`);
     } finally {
@@ -64,20 +65,21 @@ export default function UserForm() {
       </div>
 
       <div className="space-y-5">
-        {['name', 'email', 'hashedPassword', 'course'].map((field) => (
-          <div key={field}>
-            <label className="block text-sm text-gray-300 capitalize mb-1">
-              {field === 'hashedPassword' ? 'Password' : field}
-            </label>
-            <input
-              type={field === 'hashedPassword' ? 'password' : 'text'}
-              value={formData[field as keyof typeof formData]}
-              onChange={(e) => handleChange(field, e.target.value)}
-              className="w-full px-4 py-3 bg-[#1e1f24] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder={`Enter ${field === 'hashedPassword' ? 'hashed password' : field}`}
-            />
-          </div>
-        ))}
+{['name', 'email', 'password', 'course'].map((field) => (
+  <div key={field}>
+    <label className="block text-sm text-gray-300 capitalize mb-1">
+      {field === 'password' ? 'Password' : field}
+    </label>
+    <input
+      type={field === 'password' ? 'password' : 'text'}
+      value={formData[field as keyof typeof formData]}
+      onChange={(e) => handleChange(field, e.target.value)}
+      className="w-full px-4 py-3 bg-[#1e1f24] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+      placeholder={`Enter ${field === 'password' ? 'password' : field}`}
+    />
+  </div>
+))}
+
 
         <button
           onClick={handleSubmit}
