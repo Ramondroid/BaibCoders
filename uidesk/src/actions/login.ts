@@ -10,12 +10,15 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const { data: authData, error: authError } =
-    await supabase.auth.signInWithPassword({ email, password });
+  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (authError || !authData.user) {
     console.error('Login failed:', authError?.message);
     redirect('/unauthorized');
+    return; // stop execution
   }
 
   const { data: userRecord, error: userError } = await supabase
@@ -27,6 +30,7 @@ export async function login(formData: FormData) {
   if (userError || !userRecord) {
     console.error('Error fetching user role:', userError?.message);
     redirect('/unauthorized');
+    return; // stop execution
   }
 
   const role = userRecord.role;
@@ -35,9 +39,12 @@ export async function login(formData: FormData) {
 
   if (role === 'Student') {
     redirect('/student/dashboard');
+    return;
   } else if (role === 'Teacher') {
     redirect('/teacher/dashboard');
+    return;
   } else {
     redirect('/');
+    return;
   }
 }

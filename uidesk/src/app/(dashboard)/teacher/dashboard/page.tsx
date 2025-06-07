@@ -13,7 +13,7 @@ export default function DashboardPage() {
             Welcome to Your Dashboard
           </h1>
           <p className="text-white-600 text-xl mb-10">
-            Here is today's event, your ticket reviews, schedule, and guide for more questions.
+            Here is today&apos;s event, your ticket reviews, schedule, and guide for more questions.
           </p>
 
           <div className="flex flex-col gap-6 rounded-xl shadow-md">
@@ -21,10 +21,10 @@ export default function DashboardPage() {
             <div className="flex gap-6">
               <div className="bg-white hover:bg-gray-50 transition rounded-xl p-6 shadow-md flex-1">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  📚 Today's Event
+                  📚 Today&apos;s Event
                 </h2>
                 <p className="text-gray-600">
-                  Need magreflect ng today's event here
+                  Need magreflect ng today&apos;s event here
                 </p>
               </div>
 
@@ -33,7 +33,7 @@ export default function DashboardPage() {
                   🎫 Tickets
                 </h2>
                 <p className="text-gray-600">
-                  Review students' tickets and take action.
+                  Review students&apos; tickets and take action.
                 </p>
               </div>
             </div>
