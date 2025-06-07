@@ -52,7 +52,7 @@ const [formData, setFormData] = useState({
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] px-6 pt-8 pb-12 text-white flex flex-col items-center">
+  <div className="min-h-[calc(100vh-4.25rem)] bg-gradient-to-br from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] px-6 pt-8 pb-12 text-white flex flex-col items-center">
     <div className="mb-6 text-center items-left">
       <h1 className="text-4xl font-extrabold mb-2">Enroll a Student</h1>
       <p className="text-gray-300">Enroll student to platform for a new user</p>
