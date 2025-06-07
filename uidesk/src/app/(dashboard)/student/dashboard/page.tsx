@@ -128,7 +128,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
-      <CopilotChatWrapper />
     </main>
   );
 }

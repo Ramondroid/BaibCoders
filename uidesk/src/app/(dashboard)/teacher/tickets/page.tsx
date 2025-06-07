@@ -134,7 +134,6 @@ export default function TeacherHome() {
           )}
         </>
       )}
-      <CopilotChatWrapper />
     </main>
     
   );

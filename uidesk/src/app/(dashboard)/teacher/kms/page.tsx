@@ -317,7 +317,6 @@ export default function KMSManagement() {
           renderForm()
         )}
       </div>
-      <CopilotChatWrapper />
     </div>
   );
 }

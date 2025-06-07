@@ -1,4 +1,5 @@
 // app/(dashboard)/layout.tsx (for student or teacher dashboards)
+import CopilotChatWrapper from '@/components/CopilotChatWrapper';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -12,5 +13,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect('/unauthorized');
   }
 
-  return <>{children}</>;
+  return <>{children}
+      <CopilotChatWrapper />
+  </>;
 }

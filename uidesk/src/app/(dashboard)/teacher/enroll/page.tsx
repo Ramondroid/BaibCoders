@@ -106,7 +106,6 @@ export default function UserForm() {
         )}
       </div>
     </div>
-    <CopilotChatWrapper />
   </div>
 );
 };
