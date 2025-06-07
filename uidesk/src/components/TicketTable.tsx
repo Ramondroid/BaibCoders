@@ -18,12 +18,6 @@ type TicketTableProps = {
   onStatusChange: (id: string, newStatus: string) => void;
 };
 
-const statusColors = {
-  Open: 'bg-blue-600 text-white',
-  'In Progress': 'bg-yellow-500 text-black',
-  Resolved: 'bg-green-600 text-white',
-};
-
 function getStatusBgColor(status: string): string {
   switch (status) {
     case 'Open':
