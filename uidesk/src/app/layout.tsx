@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Uina",
+  icons: {
+    icon: '/favicon.svg'
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

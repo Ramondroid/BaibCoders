@@ -27,7 +27,6 @@ import {
 
 import { StringUtils } from "@azure/msal-browser";
 
-// Type definitions (unchanged)
 type CourseRegistrationInfo = {
   DegreeProgram: string;
   Semester: string;
@@ -728,7 +727,7 @@ export default function KMSManagement() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Database className="h-8 w-8 text-purple-400" />
-            <h1 className="text-4xl font-extrabold">KMS Management System</h1>
+            <h1 className="text-4xl font-extrabold"> Knowledge Management System</h1>
           </div>
           <p className="text-gray-400 text-lg">
             Manage your knowledge base entries across different categories
