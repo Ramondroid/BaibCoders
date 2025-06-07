@@ -1,7 +1,74 @@
 "use client";
 
 import React from "react";
+import { useEffect, useState } from 'react';
+import { fetchEvents } from '@/lib/supabase/fetchEvents';
 import CopilotChatWrapper from "@/components/CopilotChatWrapper";
+
+type Event = {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+};
+
+function TodaysEvents() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const events = await fetchEvents();
+        setEvents(events);
+      } catch (err) {
+        console.error('Failed to fetch events:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
+
+  if (loading) {
+    return <div className="text-gray-600">Loading events...</div>;
+  }
+
+  const today = new Date();
+  const todayString = today.toDateString();
+
+  // Filter events to only show today's events
+  const todaysEvents = events.filter((event) => {
+    const eventDate = new Date(event.date);
+    return eventDate.toDateString() === todayString;
+  });
+
+  if (todaysEvents.length === 0) {
+    return <div className="text-gray-600">No Events for Today</div>;
+  }
+
+  return (
+    <div className="space-y-3">
+      {todaysEvents.map((event) => (
+        <div
+          key={event.id}
+          className="p-3 rounded-lg"
+        >
+          <h3 className="text-base font-semibold text-purple-800 mb-1">
+            {event.title}
+          </h3>
+          <p className="text-gray-700 text-sm mb-2">
+            {event.description}
+          </p>
+          <p className="text-xs text-purple-600">
+            📅 {event.date}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   return (
@@ -20,12 +87,10 @@ export default function DashboardPage() {
             {/* Row 1 */}
             <div className="flex gap-6">
               <div className="bg-white hover:bg-gray-50 transition rounded-xl p-6 shadow-md flex-1">
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">
                   📚 Today's Event
                 </h2>
-                <p className="text-gray-600">
-                  Need magreflect ng today's event here
-                </p>
+                <TodaysEvents />
               </div>
 
               <div className="bg-white hover:bg-gray-50 transition rounded-xl p-6 shadow-md flex-1">
