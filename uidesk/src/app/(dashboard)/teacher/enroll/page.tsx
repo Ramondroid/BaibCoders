@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Save, UserPlus } from 'lucide-react';
-import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 export default function UserForm() {
 const [formData, setFormData] = useState({
@@ -44,8 +43,9 @@ const [formData, setFormData] = useState({
 
       setSubmitMessage('✅ User added successfully!');
       setFormData({ name: '', email: '', password: '', course: '' });
-    } catch (error: any) {
-      setSubmitMessage(`❌ Error: ${error.message}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setSubmitMessage(`❌ Error: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }

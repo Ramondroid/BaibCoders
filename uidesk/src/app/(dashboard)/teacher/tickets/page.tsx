@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
-import TicketTable from '@/components/TicketTable';
-import CopilotChatWrapper from "@/components/CopilotChatWrapper";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase/supabase";
+import TicketTable from "@/components/TicketTable";
 
 type Ticket = {
   ticket_id: string;
@@ -21,9 +20,9 @@ export default function TeacherHome() {
 
   useEffect(() => {
     const fetchTickets = async () => {
-      const { data, error } = await supabase.from('tickets').select('*');
+      const { data, error } = await supabase.from("tickets").select("*");
       if (error) {
-        console.error('Error fetching tickets:', error.message);
+        console.error("Error fetching tickets:", error.message);
       } else {
         setTickets(data as Ticket[]);
       }
@@ -38,15 +37,15 @@ export default function TeacherHome() {
     const ticket = tickets.find((t) => t.ticket_id === id);
     if (!ticket) return;
 
-    const newStatus = ticket.status === 'Resolved' ? 'Open' : 'Resolved';
+    const newStatus = ticket.status === "Resolved" ? "Open" : "Resolved";
 
     const { error } = await supabase
-      .from('tickets')
+      .from("tickets")
       .update({ status: newStatus })
-      .eq('ticket_id', id);
+      .eq("ticket_id", id);
 
     if (error) {
-      alert('Error updating ticket status: ' + error.message);
+      alert("Error updating ticket status: " + error.message);
       console.error(error);
     } else {
       setTickets((prev) =>
@@ -57,34 +56,36 @@ export default function TeacherHome() {
 
   // Delete ticket
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this ticket?')) return;
+    if (!confirm("Are you sure you want to delete this ticket?")) return;
 
-    const { error } = await supabase.from('tickets').delete().eq('ticket_id', id);
+    const { error } = await supabase
+      .from("tickets")
+      .delete()
+      .eq("ticket_id", id);
 
     if (error) {
-      alert('Error deleting ticket: ' + error.message);
+      alert("Error deleting ticket: " + error.message);
       console.error(error);
     } else {
       setTickets((prev) => prev.filter((t) => t.ticket_id !== id));
     }
   };
 
-
   const handleStatusChange = async (id: string, newStatus: string) => {
-  const { error } = await supabase
-    .from('tickets')
-    .update({ status: newStatus })
-    .eq('ticket_id', id);
+    const { error } = await supabase
+      .from("tickets")
+      .update({ status: newStatus })
+      .eq("ticket_id", id);
 
-  if (error) {
-    alert('Error updating status: ' + error.message);
-    console.error(error);
-  } else {
-    setTickets((prev) =>
-      prev.map((t) => (t.ticket_id === id ? { ...t, status: newStatus } : t))
-    );
-  }
-};
+    if (error) {
+      alert("Error updating status: " + error.message);
+      console.error(error);
+    } else {
+      setTickets((prev) =>
+        prev.map((t) => (t.ticket_id === id ? { ...t, status: newStatus } : t))
+      );
+    }
+  };
 
   // Close details modal
   const closeModal = () => setSelectedTicket(null);
@@ -101,40 +102,52 @@ export default function TeacherHome() {
               student: ticket.student_name,
               category: ticket.category,
               status: ticket.status,
-              assignedTo: ticket.assigned_to ?? 'Unassigned',
+              assignedTo: ticket.assigned_to ?? "Unassigned",
               description: ticket.description,
             }))}
-  onMarkResolved={handleMarkResolved}
-  onDelete={handleDelete}
-  onStatusChange={handleStatusChange}
+            onMarkResolved={handleMarkResolved}
+            onDelete={handleDelete}
+            onStatusChange={handleStatusChange}
           />
 
           {/* Modal for viewing details */}
           {selectedTicket && (
             <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
               <div className="bg-[#2f313c] rounded-xl p-20 max-w-4xl w-full shadow-lg relative">
-<button
-  onClick={closeModal}
-  className="absolute top-3 right-3 text-gray-400 hover:text-white text-4xl font-bold p-2"
-  aria-label="Close details"
->
-  &times;
-</button>
+                <button
+                  onClick={closeModal}
+                  className="absolute top-3 right-3 text-gray-400 hover:text-white text-4xl font-bold p-2"
+                  aria-label="Close details"
+                >
+                  &times;
+                </button>
 
                 <h3 className="text-xl font-semibold mb-4">
                   Ticket Details — {selectedTicket.ticket_id}
                 </h3>
-                <p><strong>Student:</strong> {selectedTicket.student_name}</p>
-                <p><strong>Category:</strong> {selectedTicket.category}</p>
-                <p><strong>Status:</strong> {selectedTicket.status}</p>
-                <p><strong>Assigned To:</strong> {selectedTicket.assigned_to ?? 'Unassigned'}</p>
-                <p className="mt-4 whitespace-pre-wrap"><strong>Description:</strong><br />{selectedTicket.description || 'No description provided.'}</p>
+                <p>
+                  <strong>Student:</strong> {selectedTicket.student_name}
+                </p>
+                <p>
+                  <strong>Category:</strong> {selectedTicket.category}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedTicket.status}
+                </p>
+                <p>
+                  <strong>Assigned To:</strong>{" "}
+                  {selectedTicket.assigned_to ?? "Unassigned"}
+                </p>
+                <p className="mt-4 whitespace-pre-wrap">
+                  <strong>Description:</strong>
+                  <br />
+                  {selectedTicket.description || "No description provided."}
+                </p>
               </div>
             </div>
           )}
         </>
       )}
     </main>
-    
   );
 }

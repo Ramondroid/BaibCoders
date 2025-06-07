@@ -43,7 +43,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ message: '✅ Student enrolled successfully' });
-  } catch (err: any) {
+  } catch (err) {
+    console.error('Enrollment error:', err);
     return NextResponse.json({ error: '❌ Server error' }, { status: 500 });
   }
 }
