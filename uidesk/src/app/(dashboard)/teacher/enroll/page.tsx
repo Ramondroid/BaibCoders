@@ -31,7 +31,7 @@ export default function UserForm() {
     }
 
     try {
-      const response = await fetch('/api/users', {
+      const response = await fetch('/api/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ table: 'Users', data: formData }),

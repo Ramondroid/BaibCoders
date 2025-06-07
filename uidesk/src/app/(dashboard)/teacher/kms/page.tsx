@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Plus, Save, Database, Users, Settings, BookOpen, Calendar, FileText, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Plus, Save, Database, Users, Settings, BookOpen, Calendar, FileText, MessageCircle
+} from 'lucide-react';
 
-// Type definitions for each table
+// Type definitions (unchanged)
 type CourseRegistrationInfo = {
   DegreeProgram: string;
   Semester: string;
@@ -28,6 +30,7 @@ type SupportServices = {
   Description: string;
   Website: string;
 };
+
 type AssessmentIssues = {
   Issue: string;
   RelevantOffice: string;
@@ -47,7 +50,7 @@ type ScheduleConflictsHelp = {
   ContactOffice: string;
 };
 
-// Form configurations
+// Form configurations (unchanged)
 const formConfigs = {
   CourseRegistrationInfo: {
     title: "Course Registration Info",
@@ -92,7 +95,6 @@ const formConfigs = {
       { name: 'ResolutionSteps', label: 'Resolution Steps', type: 'textarea', required: true }
     ]
   },
-
   GradeAppealProcess: {
     title: "Grade Appeal Process",
     icon: FileText,
@@ -132,49 +134,54 @@ export default function KMSManagement() {
     setSubmitMessage(null);
   };
 
+  useEffect(() => {
+    if (submitMessage?.includes('✅')) {
+      const timeout = setTimeout(() => {
+        resetForm();
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [submitMessage]);
+
   const handleSubmit = async () => {
-  setIsSubmitting(true)
-  setSubmitMessage(null)
+    setIsSubmitting(true);
+    setSubmitMessage(null);
 
-  try {
-    const config = formConfigs[selectedTable as keyof typeof formConfigs]
-    const requiredFields = config.fields.filter(field => field.required)
+    try {
+      const config = formConfigs[selectedTable as keyof typeof formConfigs];
+      const requiredFields = config.fields.filter(field => field.required);
 
-    for (const field of requiredFields) {
-      if (!formData[field.name] || formData[field.name].trim() === '') {
-        setSubmitMessage(`❌ ${field.label} is required.`)
-        setIsSubmitting(false)
-        return
+      for (const field of requiredFields) {
+        if (!formData[field.name] || formData[field.name].trim() === '') {
+          setSubmitMessage(`❌ ${field.label} is required.`);
+          setIsSubmitting(false);
+          return;
+        }
       }
+
+      const response = await fetch('/api/kms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          table: selectedTable,
+          data: formData,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Unknown error');
+      }
+
+      setSubmitMessage('✅ Entry added successfully!');
+    } catch (error: any) {
+      console.error('Submission error:', error);
+      setSubmitMessage(`❌ Error: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const response = await fetch('/api/kms', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        table: selectedTable,
-        data: formData,
-      }),
-    })
-
-    const result = await response.json()
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Unknown error')
-    }
-
-    setSubmitMessage('✅ Entry added successfully!')
-    resetForm()
-  } catch (error: any) {
-    console.error('Submission error:', error)
-    setSubmitMessage(`❌ Error: ${error.message}`)
-  } finally {
-    setIsSubmitting(false)
-  }
-}
-
+  };
 
   const renderForm = () => {
     if (!selectedTable) return null;

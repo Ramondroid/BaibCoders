@@ -1,4 +1,3 @@
-// app/api/kms/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase/supabase'
 
@@ -20,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ message: 'Insert successful' })
+    return NextResponse.json({ message: 'Insert successful' }, { status: 200 }) // ensure 200
   } catch (err: any) {
     console.error('Unhandled API error:', err)
     return NextResponse.json({ error: err.message || 'Unknown server error' }, { status: 500 })
