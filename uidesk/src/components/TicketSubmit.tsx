@@ -148,7 +148,7 @@ const ticketData = {
       <div className="pt-4 text-right">
         <button
           type="submit"
-          className="px-5 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition font-medium"
+          className="px-5 py-2 bg-purple-600 hover:bg-purple-700 rounded-xl transition font-medium"
           disabled={loading}
         >
           {loading ? "Submitting..." : "Submit Ticket"}

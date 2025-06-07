@@ -39,7 +39,7 @@ export default function CopilotChatWrapper() {
         className="flex items-center justify-between px-6 py-4 h-[64px] cursor-pointer bg-purple-600/80 hover:bg-purple-700/80 transition-colors"
       >
         <div className="text-white font-semibold text-lg tracking-wide">
-          Uina Assistant
+          Uina
         </div>
         <X className="text-white hover:text-gray-300" size={20} />
       </div>

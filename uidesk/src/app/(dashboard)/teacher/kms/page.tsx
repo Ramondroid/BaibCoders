@@ -7,7 +7,6 @@ import {
 import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 import { StringUtils } from '@azure/msal-browser';
 
-// Type definitions (unchanged)
 type CourseRegistrationInfo = {
   DegreeProgram: string;
   Semester: string;
