@@ -20,8 +20,14 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ message: 'Insert successful' }, { status: 200 }) // ensure 200
-  } catch (err: any) {
+} catch (err: unknown) {
+  if (err instanceof Error) {
     console.error('Unhandled API error:', err)
     return NextResponse.json({ error: err.message || 'Unknown server error' }, { status: 500 })
   }
+  // For non-Error objects, convert to string or provide fallback
+  console.error('Unhandled API error:', err)
+  return NextResponse.json({ error: 'Unknown server error' }, { status: 500 })
+}
+
 }

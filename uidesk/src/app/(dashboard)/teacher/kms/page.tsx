@@ -1,11 +1,31 @@
-'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, { useState, useEffect } from 'react';
+"use client";
+
+import React, { useState, useEffect } from "react";
 import {
-  Plus, Save, Database, Users, Settings, BookOpen, Calendar, FileText, MessageCircle, Phone, Home, FileMinus, Book, Monitor, Briefcase, Building, DollarSign, Lightbulb, AlertTriangle
-} from 'lucide-react';
-import CopilotChatWrapper from "@/components/CopilotChatWrapper";
-import { StringUtils } from '@azure/msal-browser';
+  Plus,
+  Save,
+  Database,
+  Users,
+  Settings,
+  BookOpen,
+  Calendar,
+  FileText,
+  MessageCircle,
+  Phone,
+  Home,
+  FileMinus,
+  Book,
+  Monitor,
+  Briefcase,
+  Building,
+  DollarSign,
+  Lightbulb,
+  AlertTriangle,
+} from "lucide-react";
+
+import { StringUtils } from "@azure/msal-browser";
 
 // Type definitions (unchanged)
 type CourseRegistrationInfo = {
@@ -56,7 +76,7 @@ type AdvisingSupport = {
   Topic: string;
   Description: string;
   Advisor: string;
-}
+};
 
 type ContactDirectory = {
   Name: string;
@@ -64,40 +84,40 @@ type ContactDirectory = {
   Email: string;
   Title: string;
   Phone: string;
-}
+};
 
 type CourseWithdrawalPolicies = {
   PolicyID: string;
   PolicyDescription: string;
   KeyDeadline: string;
   RelevantForm: string;
-}
+};
 
 type DocumentRequestInfo = {
   Document: string;
   ProcessingTime: string;
   Fee: string;
   RequestProcedure: string;
-}
+};
 
 type DormitorySupport = {
   Topic: string;
-  Question: string; 
+  Question: string;
   Answer: string;
-}
+};
 
 type FacilityReservations = {
   Facility: string;
   Capacity: string;
   BookingLeadTime: string;
   ContactOffice: string;
-}
+};
 
 type ITSupportFAQ = {
   Question: string;
   Answer: string;
-  Category: string
-}
+  Category: string;
+};
 
 type LibraryInfo = {
   LibraryName: string;
@@ -109,45 +129,44 @@ type LibraryInfo = {
   LibrarianCharge: string;
   Capacity: string;
   Notes: string;
-}
+};
 
 type Opportunities = {
   Type: string;
   Title: string;
   Deadline: string;
   CompanyOrOrganization: string;
-}
+};
 
 type ScholarshipSupport = {
   ScholarshipName: string;
   EligibilityCriteria: string;
   Amount: string;
   ApplicationDeadline: string;
-}
+};
 
 type SchoolCalendar = {
   Event: string;
   Notes: string;
   StartDate: string;
   EndDate: string;
-}
+};
 
-type StudentOrganization= {
+type StudentOrganization = {
   OrganizationName: string;
   Category: string;
   Email: string;
   President: string;
-}
+};
 
 type StudyTips = {
   Category: string;
   Tip: string;
   Explanation: string;
-}
+};
 type StudentConcernContacts = {
   ConcernType: string;
-}
-
+};
 
 // Form configurations (unchanged)
 const formConfigs = {
@@ -155,217 +174,386 @@ const formConfigs = {
     title: "Course Registration Info",
     icon: BookOpen,
     fields: [
-      { name: 'DegreeProgram', label: 'Degree Program', type: 'text', required: true },
-      { name: 'Semester', label: 'Semester', type: 'text', required: true },
-      { name: 'RegistrationStart', label: 'Registration Start', type: 'date', required: true },
-      { name: 'RegistrationEnd', label: 'Registration End', type: 'date', required: true },
-      { name: 'Instructions', label: 'Instructions', type: 'textarea', required: true },
-      { name: 'Schedule', label: 'Schedule', type: 'text', required: true },
-      { name: 'Requirements', label: 'Requirements', type: 'text', required: true },
-    ]
+      {
+        name: "DegreeProgram",
+        label: "Degree Program",
+        type: "text",
+        required: true,
+      },
+      { name: "Semester", label: "Semester", type: "text", required: true },
+      {
+        name: "RegistrationStart",
+        label: "Registration Start",
+        type: "date",
+        required: true,
+      },
+      {
+        name: "RegistrationEnd",
+        label: "Registration End",
+        type: "date",
+        required: true,
+      },
+      {
+        name: "Instructions",
+        label: "Instructions",
+        type: "textarea",
+        required: true,
+      },
+      { name: "Schedule", label: "Schedule", type: "text", required: true },
+      {
+        name: "Requirements",
+        label: "Requirements",
+        type: "text",
+        required: true,
+      },
+    ],
   },
   OfficeDirectory: {
     title: "Office Directory",
     icon: Users,
     fields: [
-      { name: 'OfficeName', label: 'Office Name', type: 'text', required: true },
-      { name: 'Location', label: 'Location', type: 'text', required: true },
-      { name: 'Hours', label: 'Office Hours', type: 'text', required: true },
-      { name: 'Email', label: 'Email', type: 'email', required: true },
-      { name: 'Phone', label: 'Phone', type: 'tel', required: true },
-    ]
+      {
+        name: "OfficeName",
+        label: "Office Name",
+        type: "text",
+        required: true,
+      },
+      { name: "Location", label: "Location", type: "text", required: true },
+      { name: "Hours", label: "Office Hours", type: "text", required: true },
+      { name: "Email", label: "Email", type: "email", required: true },
+      { name: "Phone", label: "Phone", type: "tel", required: true },
+    ],
   },
   SupportServices: {
     title: "Support Services",
     icon: Settings,
     fields: [
-      { name: 'Service', label: 'Service', type: 'text', required: true },
-      { name: 'ContactOffice', label: 'Contact Office', type: 'text', required: true },
-      { name: 'Description', label: 'Description', type: 'textarea', required: true },
-      { name: 'Website', label: 'Website', type: 'text', required: true }
-    ]
+      { name: "Service", label: "Service", type: "text", required: true },
+      {
+        name: "ContactOffice",
+        label: "Contact Office",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "Description",
+        label: "Description",
+        type: "textarea",
+        required: true,
+      },
+      { name: "Website", label: "Website", type: "text", required: true },
+    ],
   },
   AssessmentIssues: {
     title: "Assessment Issues",
     icon: Calendar,
     fields: [
-      { name: 'Issue', label: 'Issue', type: 'text', required: true },
-      { name: 'RelevantOffice', label: 'Relevant Office', type: 'text', required: true },
-      { name: 'ResolutionSteps', label: 'Resolution Steps', type: 'textarea', required: true }
-    ]
+      { name: "Issue", label: "Issue", type: "text", required: true },
+      {
+        name: "RelevantOffice",
+        label: "Relevant Office",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "ResolutionSteps",
+        label: "Resolution Steps",
+        type: "textarea",
+        required: true,
+      },
+    ],
   },
   GradeAppealProcess: {
     title: "Grade Appeal Process",
     icon: FileText,
     fields: [
-      { name: 'Step', label: 'Step', type: 'textarea', required: true },
-      { name: 'Deadline', label: 'Deadline', type: 'date', required: true },
-      { name: 'ActionRequired', label: 'Action Required', type: 'url', required: true },
-      { name: 'ContactPersonOrOffice', label: 'Contact Person or Office', type: 'text', required: true },
-    ]
+      { name: "Step", label: "Step", type: "textarea", required: true },
+      { name: "Deadline", label: "Deadline", type: "date", required: true },
+      {
+        name: "ActionRequired",
+        label: "Action Required",
+        type: "url",
+        required: true,
+      },
+      {
+        name: "ContactPersonOrOffice",
+        label: "Contact Person or Office",
+        type: "text",
+        required: true,
+      },
+    ],
   },
   ScheduleConflictsHelp: {
     title: "Schedule Conflicts Help",
     icon: MessageCircle,
     fields: [
-      { name: 'ConflictType', label: 'Conflict Type', type: 'text', required: true },
-      { name: 'RecommendedAction', label: 'Recommended Action', type: 'textarea', required: true },
-      { name: 'ContactOffice', label: 'Contact Office', type: 'email', required: true }
-    ]
+      {
+        name: "ConflictType",
+        label: "Conflict Type",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "RecommendedAction",
+        label: "Recommended Action",
+        type: "textarea",
+        required: true,
+      },
+      {
+        name: "ContactOffice",
+        label: "Contact Office",
+        type: "email",
+        required: true,
+      },
+    ],
   },
   AdvisingSupport: {
-  title: "Advising Support",
-  icon: BookOpen,
-  fields: [
-    { name: 'Topic', label: 'Topic', type: 'text', required: true },
-    { name: 'Description', label: 'Description', type: 'textarea', required: true },
-    { name: 'Advisor', label: 'Advisor', type: 'text', required: true }
-  ]
-},
+    title: "Advising Support",
+    icon: BookOpen,
+    fields: [
+      { name: "Topic", label: "Topic", type: "text", required: true },
+      {
+        name: "Description",
+        label: "Description",
+        type: "textarea",
+        required: true,
+      },
+      { name: "Advisor", label: "Advisor", type: "text", required: true },
+    ],
+  },
 
-ContactDirectory: {
-  title: "Contact Directory",
-  icon: Phone,
-  fields: [
-    { name: 'Name', label: 'Name', type: 'text', required: true },
-    { name: 'Department', label: 'Department', type: 'text', required: true },
-    { name: 'Email', label: 'Email', type: 'text', required: true },
-    { name: 'Title', label: 'Title', type: 'text', required: true },
-    { name: 'Phone', label: 'Phone', type: 'text', required: true }
-  ]
-},
+  ContactDirectory: {
+    title: "Contact Directory",
+    icon: Phone,
+    fields: [
+      { name: "Name", label: "Name", type: "text", required: true },
+      { name: "Department", label: "Department", type: "text", required: true },
+      { name: "Email", label: "Email", type: "text", required: true },
+      { name: "Title", label: "Title", type: "text", required: true },
+      { name: "Phone", label: "Phone", type: "text", required: true },
+    ],
+  },
 
-CourseWithdrawalPolicies: {
-  title: "Course Withdrawal Policies",
-  icon: FileMinus,
-  fields: [
-    { name: 'PolicyID', label: 'Policy ID', type: 'text', required: true },
-    { name: 'PolicyDescription', label: 'Policy Description', type: 'textarea', required: true },
-    { name: 'KeyDeadline', label: 'Key Deadline', type: 'text', required: true },
-    { name: 'RelevantForm', label: 'Relevant Form', type: 'text', required: true }
-  ]
-},
+  CourseWithdrawalPolicies: {
+    title: "Course Withdrawal Policies",
+    icon: FileMinus,
+    fields: [
+      { name: "PolicyID", label: "Policy ID", type: "text", required: true },
+      {
+        name: "PolicyDescription",
+        label: "Policy Description",
+        type: "textarea",
+        required: true,
+      },
+      {
+        name: "KeyDeadline",
+        label: "Key Deadline",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "RelevantForm",
+        label: "Relevant Form",
+        type: "text",
+        required: true,
+      },
+    ],
+  },
 
-DocumentRequestInfo: {
-  title: "Document Request Info",
-  icon: FileText,
-  fields: [
-    { name: 'Document', label: 'Document', type: 'text', required: true },
-    { name: 'ProcessingTime', label: 'Processing Time', type: 'text', required: true },
-    { name: 'Fee', label: 'Fee', type: 'text', required: true },
-    { name: 'RequestProcedure', label: 'Request Procedure', type: 'textarea', required: true }
-  ]
-},
+  DocumentRequestInfo: {
+    title: "Document Request Info",
+    icon: FileText,
+    fields: [
+      { name: "Document", label: "Document", type: "text", required: true },
+      {
+        name: "ProcessingTime",
+        label: "Processing Time",
+        type: "text",
+        required: true,
+      },
+      { name: "Fee", label: "Fee", type: "text", required: true },
+      {
+        name: "RequestProcedure",
+        label: "Request Procedure",
+        type: "textarea",
+        required: true,
+      },
+    ],
+  },
 
-DormitorySupport: {
-  title: "Dormitory Support",
-  icon: Home,
-  fields: [
-    { name: 'Topic', label: 'Topic', type: 'text', required: true },
-    { name: 'Question', label: 'Question', type: 'text', required: true },
-    { name: 'Answer', label: 'Answer', type: 'textarea', required: true }
-  ]
-},
+  DormitorySupport: {
+    title: "Dormitory Support",
+    icon: Home,
+    fields: [
+      { name: "Topic", label: "Topic", type: "text", required: true },
+      { name: "Question", label: "Question", type: "text", required: true },
+      { name: "Answer", label: "Answer", type: "textarea", required: true },
+    ],
+  },
 
-FacilityReservations: {
-  title: "Facility Reservations",
-  icon: Building,
-  fields: [
-    { name: 'Facility', label: 'Facility', type: 'text', required: true },
-    { name: 'Capacity', label: 'Capacity', type: 'text', required: true },
-    { name: 'BookingLeadTime', label: 'Booking Lead Time', type: 'text', required: true },
-    { name: 'ContactOffice', label: 'Contact Office', type: 'text', required: true }
-  ]
-},
+  FacilityReservations: {
+    title: "Facility Reservations",
+    icon: Building,
+    fields: [
+      { name: "Facility", label: "Facility", type: "text", required: true },
+      { name: "Capacity", label: "Capacity", type: "text", required: true },
+      {
+        name: "BookingLeadTime",
+        label: "Booking Lead Time",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "ContactOffice",
+        label: "Contact Office",
+        type: "text",
+        required: true,
+      },
+    ],
+  },
 
-ITSupportFAQ: {
-  title: "IT Support FAQ",
-  icon: Monitor,
-  fields: [
-    { name: 'Question', label: 'Question', type: 'text', required: true },
-    { name: 'Answer', label: 'Answer', type: 'textarea', required: true },
-    { name: 'Category', label: 'Category', type: 'text', required: true }
-  ]
-},
+  ITSupportFAQ: {
+    title: "IT Support FAQ",
+    icon: Monitor,
+    fields: [
+      { name: "Question", label: "Question", type: "text", required: true },
+      { name: "Answer", label: "Answer", type: "textarea", required: true },
+      { name: "Category", label: "Category", type: "text", required: true },
+    ],
+  },
 
-LibraryInfo: {
-  title: "Library Info",
-  icon: Book,
-  fields: [
-    { name: 'LibraryName', label: 'Library Name', type: 'text', required: true },
-    { name: 'Location', label: 'Location', type: 'text', required: true },
-    { name: 'Hours', label: 'Hours', type: 'text', required: true },
-    { name: 'ContactInfo', label: 'Contact Info', type: 'text', required: true },
-    { name: 'Services', label: 'Services', type: 'textarea', required: true },
-    { name: 'SpecialCollections', label: 'Special Collections', type: 'text', required: true },
-    { name: 'LibrarianCharge', label: 'Librarian In Charge', type: 'text', required: true },
-    { name: 'Capacity', label: 'Capacity', type: 'text', required: true },
-    { name: 'Notes', label: 'Notes', type: 'textarea', required: false }
-  ]
-},
+  LibraryInfo: {
+    title: "Library Info",
+    icon: Book,
+    fields: [
+      {
+        name: "LibraryName",
+        label: "Library Name",
+        type: "text",
+        required: true,
+      },
+      { name: "Location", label: "Location", type: "text", required: true },
+      { name: "Hours", label: "Hours", type: "text", required: true },
+      {
+        name: "ContactInfo",
+        label: "Contact Info",
+        type: "text",
+        required: true,
+      },
+      { name: "Services", label: "Services", type: "textarea", required: true },
+      {
+        name: "SpecialCollections",
+        label: "Special Collections",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "LibrarianCharge",
+        label: "Librarian In Charge",
+        type: "text",
+        required: true,
+      },
+      { name: "Capacity", label: "Capacity", type: "text", required: true },
+      { name: "Notes", label: "Notes", type: "textarea", required: false },
+    ],
+  },
 
-Opportunities: {
-  title: "Opportunities",
-  icon: Briefcase,
-  fields: [
-    { name: 'Type', label: 'Type', type: 'text', required: true },
-    { name: 'Title', label: 'Title', type: 'text', required: true },
-    { name: 'Deadline', label: 'Deadline', type: 'text', required: true },
-    { name: 'CompanyOrOrganization', label: 'Company or Organization', type: 'text', required: true }
-  ]
-},
+  Opportunities: {
+    title: "Opportunities",
+    icon: Briefcase,
+    fields: [
+      { name: "Type", label: "Type", type: "text", required: true },
+      { name: "Title", label: "Title", type: "text", required: true },
+      { name: "Deadline", label: "Deadline", type: "text", required: true },
+      {
+        name: "CompanyOrOrganization",
+        label: "Company or Organization",
+        type: "text",
+        required: true,
+      },
+    ],
+  },
 
-ScholarshipSupport: {
-  title: "Scholarship Support",
-  icon: DollarSign,
-  fields: [
-    { name: 'ScholarshipName', label: 'Scholarship Name', type: 'text', required: true },
-    { name: 'EligibilityCriteria', label: 'Eligibility Criteria', type: 'textarea', required: true },
-    { name: 'Amount', label: 'Amount', type: 'text', required: true },
-    { name: 'ApplicationDeadline', label: 'Application Deadline', type: 'text', required: true }
-  ]
-},
+  ScholarshipSupport: {
+    title: "Scholarship Support",
+    icon: DollarSign,
+    fields: [
+      {
+        name: "ScholarshipName",
+        label: "Scholarship Name",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "EligibilityCriteria",
+        label: "Eligibility Criteria",
+        type: "textarea",
+        required: true,
+      },
+      { name: "Amount", label: "Amount", type: "text", required: true },
+      {
+        name: "ApplicationDeadline",
+        label: "Application Deadline",
+        type: "text",
+        required: true,
+      },
+    ],
+  },
 
-SchoolCalendar: {
-  title: "School Calendar",
-  icon: Calendar,
-  fields: [
-    { name: 'Event', label: 'Event', type: 'text', required: true },
-    { name: 'Notes', label: 'Notes', type: 'textarea', required: false },
-    { name: 'StartDate', label: 'Start Date', type: 'text', required: true },
-    { name: 'EndDate', label: 'End Date', type: 'text', required: true }
-  ]
-},
+  SchoolCalendar: {
+    title: "School Calendar",
+    icon: Calendar,
+    fields: [
+      { name: "Event", label: "Event", type: "text", required: true },
+      { name: "Notes", label: "Notes", type: "textarea", required: false },
+      { name: "StartDate", label: "Start Date", type: "text", required: true },
+      { name: "EndDate", label: "End Date", type: "text", required: true },
+    ],
+  },
 
-StudentOrganization: {
-  title: "Student Organization",
-  icon: Users,
-  fields: [
-    { name: 'OrganizationName', label: 'Organization Name', type: 'text', required: true },
-    { name: 'Category', label: 'Category', type: 'text', required: true },
-    { name: 'Email', label: 'Email', type: 'text', required: true },
-    { name: 'President', label: 'President', type: 'text', required: true }
-  ]
-},
+  StudentOrganization: {
+    title: "Student Organization",
+    icon: Users,
+    fields: [
+      {
+        name: "OrganizationName",
+        label: "Organization Name",
+        type: "text",
+        required: true,
+      },
+      { name: "Category", label: "Category", type: "text", required: true },
+      { name: "Email", label: "Email", type: "text", required: true },
+      { name: "President", label: "President", type: "text", required: true },
+    ],
+  },
 
-StudyTips: {
-  title: "Study Tips",
-  icon: Lightbulb,
-  fields: [
-    { name: 'Category', label: 'Category', type: 'text', required: true },
-    { name: 'Tip', label: 'Tip', type: 'text', required: true },
-    { name: 'Explanation', label: 'Explanation', type: 'textarea', required: true }
-  ]
-},
+  StudyTips: {
+    title: "Study Tips",
+    icon: Lightbulb,
+    fields: [
+      { name: "Category", label: "Category", type: "text", required: true },
+      { name: "Tip", label: "Tip", type: "text", required: true },
+      {
+        name: "Explanation",
+        label: "Explanation",
+        type: "textarea",
+        required: true,
+      },
+    ],
+  },
 
-StudentConcernContacts: {
-  title: "Student Concern Contacts",
-  icon: AlertTriangle,
-  fields: [
-    { name: 'ConcernType', label: 'Concern Type', type: 'text', required: true }
-  ]
-}
-
+  StudentConcernContacts: {
+    title: "Student Concern Contacts",
+    icon: AlertTriangle,
+    fields: [
+      {
+        name: "ConcernType",
+        label: "Concern Type",
+        type: "text",
+        required: true,
+      },
+    ],
+  },
 };
 
 export default function KMSManagement() {
@@ -375,9 +563,9 @@ export default function KMSManagement() {
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const handleInputChange = (fieldName: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [fieldName]: value
+      [fieldName]: value,
     }));
   };
 
@@ -387,7 +575,7 @@ export default function KMSManagement() {
   };
 
   useEffect(() => {
-    if (submitMessage?.includes('✅')) {
+    if (submitMessage?.includes("✅")) {
       const timeout = setTimeout(() => {
         resetForm();
       }, 3000);
@@ -401,19 +589,19 @@ export default function KMSManagement() {
 
     try {
       const config = formConfigs[selectedTable as keyof typeof formConfigs];
-      const requiredFields = config.fields.filter(field => field.required);
+      const requiredFields = config.fields.filter((field) => field.required);
 
       for (const field of requiredFields) {
-        if (!formData[field.name] || formData[field.name].trim() === '') {
+        if (!formData[field.name] || formData[field.name].trim() === "") {
           setSubmitMessage(`❌ ${field.label} is required.`);
           setIsSubmitting(false);
           return;
         }
       }
 
-      const response = await fetch('/api/kms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/kms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           table: selectedTable,
           data: formData,
@@ -423,13 +611,17 @@ export default function KMSManagement() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Unknown error');
+        throw new Error(result.error || "Unknown error");
       }
 
-      setSubmitMessage('✅ Entry added successfully!');
-    } catch (error: any) {
-      console.error('Submission error:', error);
-      setSubmitMessage(`❌ Error: ${error.message}`);
+      setSubmitMessage("✅ Entry added successfully!");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Submission error:", error);
+        setSubmitMessage(`❌ Error: ${error.message}`);
+      } else {
+        setSubmitMessage("❌ An unknown error occurred");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -454,10 +646,12 @@ export default function KMSManagement() {
                 {field.label}
                 {field.required && <span className="text-red-400 ml-1">*</span>}
               </label>
-              {field.type === 'textarea' ? (
+              {field.type === "textarea" ? (
                 <textarea
-                  value={formData[field.name] || ''}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
+                  value={formData[field.name] || ""}
+                  onChange={(e) =>
+                    handleInputChange(field.name, e.target.value)
+                  }
                   rows={4}
                   className="w-full px-4 py-3 bg-[#1e1f24] border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 transition-colors text-white"
                   placeholder={`Enter ${field.label.toLowerCase()}`}
@@ -465,8 +659,10 @@ export default function KMSManagement() {
               ) : (
                 <input
                   type={field.type}
-                  value={formData[field.name] || ''}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
+                  value={formData[field.name] || ""}
+                  onChange={(e) =>
+                    handleInputChange(field.name, e.target.value)
+                  }
                   className="w-full px-4 py-3 bg-[#1e1f24] border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 transition-colors text-white"
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                 />
@@ -504,9 +700,13 @@ export default function KMSManagement() {
           </div>
 
           {submitMessage && (
-            <div className={`p-4 rounded-lg text-center font-medium ${
-              submitMessage.includes('✅') ? 'bg-green-800 text-green-100' : 'bg-red-800 text-red-100'
-            }`}>
+            <div
+              className={`p-4 rounded-lg text-center font-medium ${
+                submitMessage.includes("✅")
+                  ? "bg-green-800 text-green-100"
+                  : "bg-red-800 text-red-100"
+              }`}
+            >
               {submitMessage}
             </div>
           )}
@@ -553,7 +753,8 @@ export default function KMSManagement() {
                       {config.title}
                     </h3>
                     <p className="text-gray-400 mb-4">
-                      Add new entries to the {config.title.toLowerCase()} database
+                      Add new entries to the {config.title.toLowerCase()}{" "}
+                      database
                     </p>
                     <div className="flex items-center justify-center gap-2 text-purple-300 font-medium">
                       <Plus className="h-4 w-4" />
