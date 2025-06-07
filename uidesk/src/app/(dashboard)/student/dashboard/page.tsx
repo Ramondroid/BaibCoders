@@ -3,7 +3,6 @@
 import React from "react";
 import { useEffect, useState } from 'react';
 import { fetchEvents } from '@/lib/supabase/fetchEvents';
-import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 type Event = {
   id: number;

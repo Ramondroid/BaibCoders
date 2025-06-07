@@ -1,7 +1,6 @@
 'use client';
 
 import TicketForm from "@/components/TicketSubmit";
-import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 export default function Home() {
   return (
