@@ -90,9 +90,9 @@ export default function DashboardPage() {
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
                   📚 Today&apos;s Event
                 </h2>
-                <p className="text-gray-600">
+                <div className="text-gray-600">
                   <TodaysEvents />
-                </p>
+                </div>
               </div>
 
               <div className="bg-white hover:bg-gray-50 transition rounded-xl p-6 shadow-md flex-1">
