@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase/supabase';
 import TicketTable from '@/components/TicketTable';
+import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 type Ticket = {
   ticket_id: string;
@@ -133,6 +134,8 @@ export default function TeacherHome() {
           )}
         </>
       )}
+      <CopilotChatWrapper />
     </main>
+    
   );
 }

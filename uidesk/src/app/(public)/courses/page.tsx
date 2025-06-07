@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { fetchCourses } from '@/lib/supabase/fetchCourses';
+import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 type Course = {
   id: number;
@@ -64,7 +65,7 @@ export default function CoursesPage() {
     <main className="min-h-[calc(100vh-4.25rem)] bg-gradient-to-r from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] text-white px-6 py-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Course Programs</h1>
+          <h1 className="text-4xl font-extrabold mb-2">Course Programs</h1>
           <p className="text-gray-300">Explore all available degree programs within our campus</p>
         </div>
 
@@ -101,6 +102,7 @@ export default function CoursesPage() {
           </div>
         )}
       </div>
+      <CopilotChatWrapper />
     </main>
   );
 }

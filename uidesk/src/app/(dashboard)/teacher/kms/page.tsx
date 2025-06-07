@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Plus, Save, Database, Users, Settings, BookOpen, Calendar, FileText, MessageCircle
 } from 'lucide-react';
+import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 // Type definitions (unchanged)
 type CourseRegistrationInfo = {
@@ -316,6 +317,7 @@ export default function KMSManagement() {
           renderForm()
         )}
       </div>
+      <CopilotChatWrapper />
     </div>
   );
 }

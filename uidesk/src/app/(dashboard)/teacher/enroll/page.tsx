@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Save, UserPlus } from 'lucide-react';
+import CopilotChatWrapper from "@/components/CopilotChatWrapper";
 
 export default function UserForm() {
   const [formData, setFormData] = useState({
@@ -105,6 +106,7 @@ export default function UserForm() {
         )}
       </div>
     </div>
+    <CopilotChatWrapper />
   </div>
 );
 };
