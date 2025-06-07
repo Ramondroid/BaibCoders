@@ -40,7 +40,8 @@ export default function EventsPage() {
   return (
     <main className="min-h-[calc(100vh-4.25rem)] flex justify-center bg-gradient-to-r from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] text-white px-6">
       <div className="p-6 space-y-5">
-        <h1 className="text-2xl font-bold">Events</h1>
+        <h1 className="text-4xl font-bold mb-2">Events</h1>
+        <p className="text-gray-300">Explore all upcoming events within the campus</p>
         {upcomingEvents.length === 0 ? (
           <p className="text-gray-400">No upcoming events</p>
         ) : (
@@ -53,20 +54,20 @@ export default function EventsPage() {
             return (
               <div
                 key={event.id}
-                className={`border p-6 rounded shadow ${
+                className={`border p-6 rounded shadow rounded-3xl ${
                   isToday ? 'bg-purple-500 border-purple-500' : 'bg-white'
                 }`}
               >
                 <h2 className={`text-xl font-semibold ${isToday ? 'text-white' : 'text-black'}`}>
-                  {event.title}
+                  {event.title} {isToday && <span className="text-white font-semibold"> - Today</span>}
                 </h2>
                 <p className={`${isToday ? 'text-white' : 'text-black'}`}>
                   {event.description}
                 </p>
-                <p className={`text-sm ${isToday ? 'text-white' : 'text-black'}`}>
+                <p className={`text-sm ${isToday ? 'text-white pt-4' : 'text-black '}`}>
                   📅 {event.date}
                 </p>
-                {isToday && <span className="text-white font-semibold">Today</span>}
+                
               </div>
             );
           })

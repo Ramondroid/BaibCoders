@@ -264,7 +264,7 @@ export default function KMSManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] text-white p-6">
+    <div className="min-h-[calc(100vh-4.25rem)] bg-gradient-to-br from-[#1e1f24] via-[#2a2b31] to-[#1a1a2e] text-white p-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

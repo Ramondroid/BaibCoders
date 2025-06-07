@@ -55,13 +55,13 @@ function TodaysEvents() {
           key={event.id}
           className="p-3 rounded-lg"
         >
-          <h3 className="text-base font-semibold text-purple-800 mb-1">
+          <h3 className="text-base font-semibold text-gray-800 mb-1">
             {event.title}
           </h3>
           <p className="text-gray-700 text-sm mb-2">
             {event.description}
           </p>
-          <p className="text-xs text-purple-600">
+          <p className="text-xs text-gray-800">
             📅 {event.date}
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
                   📚 Today&apos;s Event
                 </h2>
                 <p className="text-gray-600">
-                  Need magreflect ng today&apos;s event here
+                  <TodaysEvents />
                 </p>
               </div>
 
