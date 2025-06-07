@@ -79,7 +79,7 @@ export default function DashboardPage() {
             Welcome to Your Dashboard
           </h1>
           <p className="text-white-600 text-xl mb-10">
-            Here is today&apos;s event, your tickets, courses, and guide for more questions.
+            Here is today&apos;s event, tickets, events and courses, and Uina for more questions.
           </p>
 
           <div className="flex flex-col gap-6 rounded-xl shadow-md">
@@ -99,7 +99,7 @@ export default function DashboardPage() {
                   🎫 Tickets
                 </h2>
                 <p className="text-gray-600">
-                  Submit or check tickets with ease.
+                  Submit tickets with ease.
                 </p>
               </div>
             </div>
