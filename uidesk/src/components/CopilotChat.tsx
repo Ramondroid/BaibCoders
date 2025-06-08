@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { PublicClientApplication, type AuthenticationResult } from '@azure/msal-browser'
 import { msalConfig } from '@/lib/msalConfig'
+import ReactMarkdown from 'react-markdown'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -126,25 +127,40 @@ export default function CopilotChat() {
   return (
     <div className="w-full h-full flex flex-col bg-white dark:bg-[#1e1f24] text-black dark:text-white">
       {/* Messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-3">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+<div className="flex-1 p-4 overflow-y-auto space-y-3">
+  {messages.map((msg, i) => (
+    <div
+      key={i}
+      className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+    >
+      <div
+        className={`max-w-[80%] px-4 py-2 rounded-xl text-sm ${
+          msg.role === 'user'
+            ? 'bg-blue-600 text-white'
+            : 'bg-gray-200 dark:bg-[#333] text-gray-800 dark:text-white'
+        }`}
+      >
+        {msg.role === 'assistant' ? (
+          <ReactMarkdown
+            components={{
+              div: ({ children }) => (
+                <div className="prose dark:prose-invert prose-sm max-w-none">
+                  {children}
+                </div>
+              ),
+            }}
           >
-            <div
-              className={`max-w-[80%] px-4 py-2 rounded-xl text-sm ${
-                msg.role === 'user'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-[#333] text-gray-800 dark:text-white'
-              }`}
-            >
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        <div ref={scrollRef} />
+            {msg.content}
+          </ReactMarkdown>
+        ) : (
+          msg.content
+        )}
       </div>
+    </div>
+  ))}
+  <div ref={scrollRef} />
+</div>
+
 
       {/* Quick Replies */}
       {quickReplies.length > 0 && (
@@ -176,7 +192,7 @@ export default function CopilotChat() {
         <button
           onClick={() => sendMessage()}
           disabled={loading || !input.trim()}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+          className="bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition"
         >
           Send
         </button>

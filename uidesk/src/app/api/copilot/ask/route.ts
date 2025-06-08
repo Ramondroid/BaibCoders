@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   const client = new CopilotStudioClient(settings, token)
   const replies = await client.askQuestionAsync(text, conversationId)
-  console.log('[Copilot Replies]', JSON.stringify(replies, null, 2))
+  // console.log('[Copilot Replies]', JSON.stringify(replies, null, 2))
 
   return NextResponse.json(replies)
 }
